@@ -19,8 +19,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 68px;
-  height: 68px;
+  width: 122px;
+  height: 122px;
   border-radius: 50%;
   border: 1px solid var(--border);
   background: var(--surface);
@@ -35,10 +35,10 @@
 }
 
 .leadLogoImg {
-  width: 52px;
-  height: 52px;
+  width: 102px;
+  height: 102px;
   object-fit: contain;
-  border-radius: 6px;
+  border-radius: 10px;
 }
 
 // Zona del orbe
@@ -99,8 +99,9 @@
 
 .avatar {
   flex-shrink: 0;
-  margin-top: 10px;
-  filter: drop-shadow(0 0 8px rgba(255, 184, 25, 0.45));
+  margin-top: 6px;
+  width: 34px;
+  height: 34px;
 }
 
 .bubbleMentorBody {
@@ -284,7 +285,8 @@
 
 .modalBannerOrb {
   flex-shrink: 0;
-  filter: drop-shadow(0 0 14px rgba(255, 184, 25, 0.5));
+  width: 56px;
+  height: 56px;
 }
 
 .modalBannerText {
@@ -444,6 +446,41 @@
 .linkButton:hover {
   border-color: rgba(255, 184, 25, 0.5);
   background: var(--surface-strong);
+}
+
+// Botón flotante para reabrir el modal del resultado
+.reopenButton {
+  position: fixed;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 22px 8px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 184, 25, 0.45);
+  background: var(--surface-strong);
+  box-shadow: var(--shadow-gold-soft);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition:
+    border-color var(--speed-fast) var(--ease-out),
+    box-shadow var(--speed-fast) var(--ease-out);
+}
+
+.reopenButton:hover {
+  border-color: rgba(255, 184, 25, 0.8);
+  box-shadow: var(--shadow-gold);
+}
+
+.reopenText {
+  white-space: nowrap;
 }
 
 // Footer

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import Orb from "./ui/Orb";
+import GuiaMascot from "./ui/GuiaMascot";
 import Starfield from "./ui/Starfield";
 import Typewriter from "./ui/Typewriter";
 import Chip from "./ui/Chip";
@@ -122,7 +122,7 @@ export default function MentorExperience() {
     await wait(450);
 
     setSpeaking(true);
-    await pushMentor(`¡Hola! 👋 Soy ${BRAND_NAME}, tu mentor IA de ${ORG_NAME}.`);
+    await pushMentor(`¡Hola! 👋 Soy Guía, tu mentor IA de ${ORG_NAME}.`);
     await wait(320);
     await pushMentor(
       "Voy a hacerte unas preguntas para conocerte y descubrir juntos tu rumbo dentro del ecosistema LEAD. Vamos paso a paso.",
@@ -276,8 +276,8 @@ export default function MentorExperience() {
           <Image
             src="/assets/logo-lead.webp"
             alt={ORG_NAME}
-            width={56}
-            height={56}
+            width={102}
+            height={102}
             unoptimized
             className={styles.leadLogoImg}
           />
@@ -290,8 +290,11 @@ export default function MentorExperience() {
       ) : (
         <>
           <div className={styles.orbZone}>
-            <Orb thinking={thinking} speaking={speaking} size={150} />
-            <div className={styles.orbLabel}>{BRAND_NAME}</div>
+            <GuiaMascot
+              state={thinking ? "thinking" : speaking ? "speaking" : "idle"}
+              size={170}
+            />
+            <div className={styles.orbLabel}>Guía</div>
           </div>
 
           <main className={styles.main}>
@@ -307,7 +310,7 @@ export default function MentorExperience() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3, ease: "easeOut" }}
                       >
-                        <Image src="/orb.svg" alt="" width={26} height={26} className={styles.avatar} unoptimized />
+                        <GuiaMascot state="idle" size={34} mode="avatar" className={styles.avatar} />
                         <div className={styles.bubbleMentorBody}>
                           <Typewriter text={entry.text} onDone={() => handleTypedDone(entry.id)} />
                         </div>
@@ -355,6 +358,25 @@ export default function MentorExperience() {
       <footer className={styles.footer}>
         {BRAND_NAME} · Mentor IA de {ORG_NAME} — Descubre tu rumbo.
       </footer>
+
+      <AnimatePresence>
+        {result && !resultOpen && (
+          <motion.button
+            type="button"
+            className={styles.reopenButton}
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            transition={{ type: "spring", damping: 22, stiffness: 260 }}
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.96 }}
+            onClick={() => setResultOpen(true)}
+          >
+            <GuiaMascot state="greeting" size={44} mode="avatar" />
+            <span className={styles.reopenText}>Ver mi ruta</span>
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {resultOpen && result && (
@@ -438,7 +460,7 @@ function ResultCard({
   return (
     <GlowCard glow={color}>
       <div className={styles.modalBanner} style={{ "--banner": color } as CSSProperties}>
-        <Image src="/orb.svg" alt="" width={46} height={46} className={styles.modalBannerOrb} unoptimized />
+              <GuiaMascot state="greeting" size={56} mode="avatar" className={styles.modalBannerOrb} />
         <div className={styles.modalBannerText}>
           <span className={styles.modalBannerKicker}>TU RUTA SUGERIDA</span>
           <h2 className={styles.modalBannerTitle}>{pilar}</h2>

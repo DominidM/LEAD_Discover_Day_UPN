@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Orb from "./ui/Orb";
+import GuiaMascot from "./ui/GuiaMascot";
 import Button from "./ui/Button";
 import { ORG_NAME } from "@/lib/constants";
 import styles from "./WelcomeScreen.module.scss";
@@ -43,13 +43,15 @@ export default function WelcomeScreen({ onStart }: WelcomeScreenProps) {
             <Image
               src="/assets/logo-lead.webp"
               alt={ORG_NAME}
-              width={40}
-              height={40}
+              width={56}
+              height={56}
               unoptimized
               className={styles.brandImg}
             />
-            <span className={styles.brandName}>{ORG_NAME}</span>
-            <span className={styles.brandTag}>DISCOVER DAY</span>
+            <span className={styles.brandText}>
+              <span className={styles.brandName}>{ORG_NAME}</span>
+              <span className={styles.brandTag}>DISCOVER DAY</span>
+            </span>
           </a>
           <div className={styles.badge}>
             <span className={styles.badgeDot} />
@@ -58,7 +60,7 @@ export default function WelcomeScreen({ onStart }: WelcomeScreenProps) {
         </motion.div>
 
         <motion.div variants={item} className={styles.orb}>
-          <Orb thinking={false} speaking={false} size={112} />
+          <GuiaMascot state="greeting" size={180} />
         </motion.div>
 
         <motion.h1 variants={item} className={styles.title}>

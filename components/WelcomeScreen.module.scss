@@ -20,25 +20,11 @@
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
   background:
-    radial-gradient(80% 55% at 50% 0%, rgba(255, 184, 25, 0.1) 0%, transparent 62%),
-    radial-gradient(85% 60% at 50% 110%, rgba(123, 52, 160, 0.12) 0%, transparent 65%),
-    radial-gradient(60% 45% at 15% 15%, rgba(165, 36, 117, 0.08) 0%, transparent 55%),
+    radial-gradient(85% 60% at 50% 110%, rgba(123, 52, 160, 0.14) 0%, transparent 65%),
     linear-gradient(165deg, var(--surface-strong) 0%, var(--surface) 55%, rgba(255, 255, 255, 0.01) 100%);
   box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(14px);
   overflow: hidden;
-}
-
-.inner::after {
-  content: "";
-  position: absolute;
-  top: -80px;
-  right: -80px;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 184, 25, 0.14), transparent 65%);
-  pointer-events: none;
 }
 
 // Bloque superior: marca + badge
@@ -52,36 +38,40 @@
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
   text-decoration: none;
   color: var(--white);
 }
 
 .brandImg {
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   object-fit: contain;
-  border-radius: 6px;
+  border-radius: 8px;
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
 }
 
 .brandName {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   letter-spacing: 0.06em;
+  line-height: 1;
 }
 
 .brandTag {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 0.78rem;
-  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted);
-  padding: 5px 12px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--border);
-  background: var(--surface);
 }
 
 .badge {
@@ -115,7 +105,9 @@
 }
 
 .orb {
-  filter: drop-shadow(0 0 40px rgba(255, 184, 25, 0.25));
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .title {

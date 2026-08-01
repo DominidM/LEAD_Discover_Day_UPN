@@ -1,0 +1,101 @@
+.wrap {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  overflow: hidden;
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.2));
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition:
+    opacity 0.25s var(--ease-out),
+    transform 0.25s var(--ease-out);
+  transform-origin: center bottom;
+  pointer-events: none;
+}
+
+.image.active {
+  opacity: 1;
+}
+
+// Modo avatar: recorte circular enfocado en la cara
+.avatar {
+  border-radius: 50%;
+  box-shadow: 0 0 18px rgba(255, 184, 25, 0.22);
+}
+
+.avatar .image {
+  object-fit: cover;
+  object-position: top center;
+}
+
+// Animaciones solo en modo completo
+.idle .image.active {
+  animation: guia-breathe 3.2s ease-in-out infinite;
+}
+
+.speaking .image.active {
+  animation: guia-bob 0.45s ease-in-out infinite;
+}
+
+.thinking .image.active {
+  animation: guia-tilt 2.2s ease-in-out infinite;
+}
+
+.greeting .image.active {
+  animation: guia-greet 0.9s ease-out both;
+}
+
+@keyframes guia-breathe {
+  0%,
+  100% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.02) translateY(-2px);
+  }
+}
+
+@keyframes guia-bob {
+  0%,
+  100% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.04) translateY(-4px);
+  }
+}
+
+@keyframes guia-tilt {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(2deg);
+  }
+  75% {
+    transform: rotate(-2deg);
+  }
+}
+
+@keyframes guia-greet {
+  0% {
+    transform: scale(0.9) translateY(8px);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.04) translateY(-3px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
