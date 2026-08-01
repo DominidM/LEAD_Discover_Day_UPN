@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk, Instrument_Serif } from "next/font/google";
+import Cursor from "@/components/ui/Cursor";
 import "./globals.scss";
 
 const spaceGrotesk = Space_Grotesk({
@@ -47,10 +48,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("lead-guia-theme");if(t==="light"){document.documentElement.setAttribute("data-theme","light");}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className={`${spaceGrotesk.variable} ${inter.variable} ${instrumentSerif.variable}`}>
         <div className="app-backdrop" aria-hidden="true" />
         <div className="app-grain" aria-hidden="true" />
+        <Cursor />
         {children}
       </body>
     </html>

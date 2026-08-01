@@ -6,13 +6,20 @@ import styles from "./Button.module.scss";
 
 interface ButtonProps extends HTMLMotionProps<"button"> {
   variant?: "primary" | "ghost";
+  size?: "md" | "lg";
 }
 
-export default function Button({ variant = "primary", className, children, ...rest }: ButtonProps) {
+export default function Button({
+  variant = "primary",
+  size = "md",
+  className,
+  children,
+  ...rest
+}: ButtonProps) {
   return (
     <motion.button
       type="button"
-      className={`${styles.button} ${styles[variant]} ${className ?? ""}`}
+      className={`${styles.button} ${styles[variant]} ${styles[size]} ${className ?? ""}`}
       whileHover={{ scale: 1.03, y: -1 }}
       whileTap={{ scale: 0.97 }}
       {...rest}

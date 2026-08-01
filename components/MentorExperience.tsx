@@ -9,6 +9,8 @@ import Typewriter from "./ui/Typewriter";
 import Chip from "./ui/Chip";
 import Button from "./ui/Button";
 import GlowCard from "./ui/GlowCard";
+import ThemeToggle from "./ui/ThemeToggle";
+import WelcomeScreen from "./WelcomeScreen";
 import { steps } from "@/lib/mock-data";
 import { emptyUserData, type RutaSugerida, type UserData } from "@/lib/ai/mentor";
 import { MockMentor } from "@/lib/ai/mock-mentor";
@@ -26,6 +28,8 @@ const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, 
 const formatAnswer = (value: string | string[]): string =>
   Array.isArray(value) ? value.join(", ") : value;
 
+type Theme = "dark" | "light";
+
 export default function MentorExperience() {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [activeStep, setActiveStep] = useState<number | null>(null);
@@ -35,11 +39,31 @@ export default function MentorExperience() {
   const [resultOpen, setResultOpen] = useState(false);
   const [userData, setUserData] = useState<UserData>(emptyUserData());
   const [speaking, setSpeaking] = useState(false);
+  const [welcome, setWelcome] = useState(true);
 
-  const [mouse, setMouse] = useState({ x: -200, y: -200 });
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof document !== "undefined") {
+      return document.documentElement.getAttribute("data-theme") === "light"
+        ? "light"
+        : "dark";
+    }
+    return "dark";
+  });
+
+  const toggleTheme = () => {
+    setTheme((prev) => {
+      const next: Theme = prev === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      try {
+        localStorage.setItem("lead-guia-theme", next);
+      } catch {
+        /* noop */
+      }
+      return next;
+    });
+  };
 
   const scrollRef = useRef<HTMLDivElement>(null);
-  const startedRef = useRef(false);
   const runningRef = useRef(false);
   const pendingResolve = useRef<((v: string | string[]) => void) | null>(null);
   const typeResolvers = useRef(new Map<number, () => void>());
@@ -82,6 +106,11 @@ export default function MentorExperience() {
 
   const restart = () => {
     runningRef.current = false;
+    void run();
+  };
+
+  const handleStart = () => {
+    setWelcome(false);
     void run();
   };
 
@@ -144,21 +173,6 @@ export default function MentorExperience() {
     setResultOpen(true);
     runningRef.current = false;
   };
-
-  const runRef = useRef(run);
-  runRef.current = run;
-
-  useEffect(() => {
-    if (startedRef.current) return;
-    startedRef.current = true;
-    void runRef.current();
-  }, []);
-
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => setMouse({ x: e.clientX, y: e.clientY });
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, []);
 
   useEffect(() => {
     setChipSelection([]);
@@ -251,12 +265,6 @@ export default function MentorExperience() {
     <div className={styles.experience}>
       <Starfield density={90} />
 
-      <div
-        className={styles.cursorGlow}
-        style={{ transform: `translate3d(${mouse.x}px, ${mouse.y}px, 0)` }}
-        aria-hidden="true"
-      />
-
       <header className={styles.header}>
         <a
           href="https://leadupn.page/"
@@ -274,68 +282,75 @@ export default function MentorExperience() {
             className={styles.leadLogoImg}
           />
         </a>
+        <ThemeToggle theme={theme} onToggle={toggleTheme} />
       </header>
 
-      <div className={styles.orbZone}>
-        <Orb thinking={thinking} speaking={speaking} size={150} />
-        <div className={styles.orbLabel}>{BRAND_NAME}</div>
-      </div>
-
-      <main className={styles.main}>
-        <div className={styles.scroll} ref={scrollRef} aria-live="polite">
-          <div className={styles.chat}>
-            {entries.map((entry) => {
-              if (entry.kind === "mentor") {
-                return (
-                  <motion.div
-                    key={entry.id}
-                    className={styles.bubbleMentor}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                  >
-                    <Image src="/orb.svg" alt="" width={26} height={26} className={styles.avatar} unoptimized />
-                    <div className={styles.bubbleMentorBody}>
-                      <Typewriter text={entry.text} onDone={() => handleTypedDone(entry.id)} />
-                    </div>
-                  </motion.div>
-                );
-              }
-              if (entry.kind === "user") {
-                return (
-                  <motion.div
-                    key={entry.id}
-                    className={styles.bubbleUser}
-                    initial={{ opacity: 0, y: 10, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                  >
-                    {entry.text}
-                  </motion.div>
-                );
-              }
-              return null;
-            })}
-
-            {thinking && (
-              <motion.div
-                className={styles.thinking}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                <span className={styles.dot} />
-                <span className={styles.dot} />
-                <span className={styles.dot} />
-                <span className={styles.thinkingText}>LEAD-GUÍA está analizando tu perfil…</span>
-              </motion.div>
-            )}
-
-            {inputArea}
-
-            <div className={styles.scrollSpacer} />
+      {welcome ? (
+        <WelcomeScreen onStart={handleStart} />
+      ) : (
+        <>
+          <div className={styles.orbZone}>
+            <Orb thinking={thinking} speaking={speaking} size={150} />
+            <div className={styles.orbLabel}>{BRAND_NAME}</div>
           </div>
-        </div>
-      </main>
+
+          <main className={styles.main}>
+            <div className={styles.scroll} ref={scrollRef} aria-live="polite">
+              <div className={styles.chat}>
+                {entries.map((entry) => {
+                  if (entry.kind === "mentor") {
+                    return (
+                      <motion.div
+                        key={entry.id}
+                        className={styles.bubbleMentor}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                      >
+                        <Image src="/orb.svg" alt="" width={26} height={26} className={styles.avatar} unoptimized />
+                        <div className={styles.bubbleMentorBody}>
+                          <Typewriter text={entry.text} onDone={() => handleTypedDone(entry.id)} />
+                        </div>
+                      </motion.div>
+                    );
+                  }
+                  if (entry.kind === "user") {
+                    return (
+                      <motion.div
+                        key={entry.id}
+                        className={styles.bubbleUser}
+                        initial={{ opacity: 0, y: 10, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                      >
+                        {entry.text}
+                      </motion.div>
+                    );
+                  }
+                  return null;
+                })}
+
+                {thinking && (
+                  <motion.div
+                    className={styles.thinking}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    <span className={styles.dot} />
+                    <span className={styles.dot} />
+                    <span className={styles.dot} />
+                    <span className={styles.thinkingText}>LEAD-GUÍA está analizando tu perfil…</span>
+                  </motion.div>
+                )}
+
+                {inputArea}
+
+                <div className={styles.scrollSpacer} />
+              </div>
+            </div>
+          </main>
+        </>
+      )}
 
       <footer className={styles.footer}>
         {BRAND_NAME} · Mentor IA de {ORG_NAME} — Descubre tu rumbo.

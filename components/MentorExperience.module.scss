@@ -7,22 +7,6 @@
   padding: 0 clamp(16px, 4vw, 40px);
 }
 
-// Glow que sigue al cursor
-.cursorGlow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 480px;
-  height: 480px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 184, 25, 0.08), transparent 65%);
-  pointer-events: none;
-  z-index: 0;
-  transform: translate3d(-50%, -50%, 0);
-  transition: opacity var(--speed-slow) ease;
-  will-change: transform;
-}
-
 // Header
 .header {
   display: flex;
@@ -135,7 +119,7 @@
   padding: 12px 18px;
   border-radius: 18px 4px 18px 18px;
   background: linear-gradient(135deg, var(--gold-light), var(--gold));
-  color: var(--night);
+  color: var(--ink);
   font-weight: 600;
   font-size: 0.98rem;
   box-shadow: var(--shadow-gold-soft);
@@ -248,7 +232,7 @@
   display: grid;
   place-items: center;
   padding: 20px;
-  background: rgba(1, 7, 35, 0.72);
+  background: var(--overlay);
   backdrop-filter: blur(10px);
 }
 
@@ -412,7 +396,7 @@
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.88rem;
-  color: var(--night);
+  color: var(--ink);
   background: var(--acc);
   box-shadow: 0 0 14px color-mix(in srgb, var(--acc) 40%, transparent);
   margin-top: 2px;

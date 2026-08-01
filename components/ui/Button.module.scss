@@ -18,8 +18,13 @@
 
 .primary {
   background: linear-gradient(135deg, var(--gold-light), var(--gold) 55%, var(--gold-deep));
-  color: var(--night);
+  color: var(--ink);
   box-shadow: var(--shadow-gold);
+}
+
+.lg {
+  padding: 16px 34px;
+  font-size: 1.05rem;
 }
 
 .primary:hover {

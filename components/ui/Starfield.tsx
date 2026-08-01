@@ -27,6 +27,17 @@ export default function Starfield({ density = 70 }: StarfieldProps) {
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let raf = 0;
+    let isLight =
+      document.documentElement.getAttribute("data-theme") === "light";
+
+    const observer = new MutationObserver(() => {
+      isLight =
+        document.documentElement.getAttribute("data-theme") === "light";
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
 
     const stars: Star[] = Array.from({ length: density }, () => ({
       x: Math.random(),
@@ -54,7 +65,9 @@ export default function Starfield({ density = 70 }: StarfieldProps) {
         const alpha = 0.25 + 0.4 * Math.sin(s.tw);
         ctx.beginPath();
         ctx.arc(s.x * canvas.width, s.y * canvas.height, s.r * devicePixelRatio, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+        ctx.fillStyle = isLight
+          ? `rgba(2, 12, 65, ${alpha})`
+          : `rgba(255, 255, 255, ${alpha})`;
         ctx.fill();
       }
       raf = requestAnimationFrame(draw);
@@ -64,6 +77,7 @@ export default function Starfield({ density = 70 }: StarfieldProps) {
 
     return () => {
       cancelAnimationFrame(raf);
+      observer.disconnect();
       window.removeEventListener("resize", resize);
     };
   }, [density]);
