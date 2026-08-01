@@ -1,0 +1,26 @@
+.card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--border);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition:
+    border-color var(--speed-med) var(--ease-out),
+    box-shadow var(--speed-med) var(--ease-out);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(120% 90% at 50% -10%, color-mix(in srgb, var(--card-glow) 22%, transparent), transparent 60%);
+  pointer-events: none;
+}
+
+.card:hover {
+  border-color: color-mix(in srgb, var(--card-glow) 45%, transparent);
+  box-shadow: var(--shadow-card), 0 0 30px color-mix(in srgb, var(--card-glow) 22%, transparent);
+}

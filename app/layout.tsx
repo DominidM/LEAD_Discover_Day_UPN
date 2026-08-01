@@ -1,0 +1,58 @@
+import type { Metadata, Viewport } from "next";
+import { Inter, Space_Grotesk, Instrument_Serif } from "next/font/google";
+import "./globals.scss";
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-instrument-serif",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: "LEAD-GUÍA · Mentor IA de LEAD UPN",
+  description:
+    "LEAD-GUÍA es el mentor IA de LEAD UPN. Responde unas preguntas y descubre tu pilar y tu ruta dentro del ecosistema LEAD.",
+  keywords: [
+    "LEAD UPN",
+    "mentor IA",
+    "orientación vocacional",
+    "universidad privada del norte",
+    "liderazgo",
+    "STEM",
+  ],
+};
+
+export const viewport: Viewport = {
+  themeColor: "#010723",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="es">
+      <body className={`${spaceGrotesk.variable} ${inter.variable} ${instrumentSerif.variable}`}>
+        <div className="app-backdrop" aria-hidden="true" />
+        <div className="app-grain" aria-hidden="true" />
+        {children}
+      </body>
+    </html>
+  );
+}
