@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Orb from "./ui/Orb";
 import Starfield from "./ui/Starfield";
@@ -17,8 +17,7 @@ import styles from "./MentorExperience.module.scss";
 
 type Entry =
   | { kind: "mentor"; text: string; id: number }
-  | { kind: "user"; text: string; id: number }
-  | { kind: "result" };
+  | { kind: "user"; text: string; id: number };
 
 let entryId = 0;
 
@@ -33,6 +32,7 @@ export default function MentorExperience() {
   const [chipSelection, setChipSelection] = useState<string[]>([]);
   const [thinking, setThinking] = useState(false);
   const [result, setResult] = useState<RutaSugerida | null>(null);
+  const [resultOpen, setResultOpen] = useState(false);
   const [userData, setUserData] = useState<UserData>(emptyUserData());
   const [speaking, setSpeaking] = useState(false);
 
@@ -76,6 +76,7 @@ export default function MentorExperience() {
     setChipSelection([]);
     setThinking(false);
     setResult(null);
+    setResultOpen(false);
     setUserData(emptyUserData());
   };
 
@@ -104,13 +105,22 @@ export default function MentorExperience() {
 
     for (let i = 0; i < steps.length; i++) {
       const step = steps[i];
+      const question =
+        step.id === "motivacion" && data.nombre
+          ? `Última pregunta, ${data.nombre}… ¿qué te motiva a lograrlo?`
+          : step.question;
       setSpeaking(true);
-      await pushMentor(step.question);
+      await pushMentor(question);
       setSpeaking(false);
       const answer = await waitForAnswer(i);
       (data as unknown as Record<string, string | string[]>)[step.field] = answer;
       setUserData({ ...data });
       pushUser(formatAnswer(answer));
+      if (step.id === "nombre" && typeof answer === "string" && answer.trim()) {
+        setSpeaking(true);
+        await pushMentor(`¡Un gusto conocerte, ${answer.trim()}! Desde aquí vamos paso a paso.`);
+        setSpeaking(false);
+      }
       await wait(140);
     }
 
@@ -123,8 +133,6 @@ export default function MentorExperience() {
     const ruta = await new MockMentor().getRecommendation(data);
     setThinking(false);
     setResult(ruta);
-    setEntries((prev) => [...prev, { kind: "result" }]);
-    await wait(200);
 
     setSpeaking(true);
     await pushMentor(`¡Listo, ${ruta.nombre}!`);
@@ -133,6 +141,7 @@ export default function MentorExperience() {
     );
     setSpeaking(false);
 
+    setResultOpen(true);
     runningRef.current = false;
   };
 
@@ -159,6 +168,15 @@ export default function MentorExperience() {
     const el = scrollRef.current;
     if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [entries, thinking, result]);
+
+  useEffect(() => {
+    if (!resultOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setResultOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [resultOpen]);
 
   const handleTypedDone = (id: number) => {
     const resolve = typeResolvers.current.get(id);
@@ -240,14 +258,22 @@ export default function MentorExperience() {
       />
 
       <header className={styles.header}>
-        <div className={styles.brand}>
-          <Image src="/orb.svg" alt="" width={34} height={34} className={styles.brandMark} unoptimized />
-          <span className={styles.wordmark}>
-            <span className={styles.wordmarkLead}>LEAD</span>
-            <span className={styles.wordmarkGuia}>-GUÍA</span>
-          </span>
-        </div>
-        <span className={styles.badge}>{ORG_NAME}</span>
+        <a
+          href="https://leadupn.page/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.leadLogo}
+          title={ORG_NAME}
+        >
+          <Image
+            src="/assets/logo-lead.webp"
+            alt={ORG_NAME}
+            width={56}
+            height={56}
+            unoptimized
+            className={styles.leadLogoImg}
+          />
+        </a>
       </header>
 
       <div className={styles.orbZone}>
@@ -288,11 +314,6 @@ export default function MentorExperience() {
                   </motion.div>
                 );
               }
-              if (entry.kind === "result" && result) {
-                return (
-                  <ResultCard key="result" result={result} userData={userData} onRestart={restart} />
-                );
-              }
               return null;
             })}
 
@@ -319,6 +340,37 @@ export default function MentorExperience() {
       <footer className={styles.footer}>
         {BRAND_NAME} · Mentor IA de {ORG_NAME} — Descubre tu rumbo.
       </footer>
+
+      <AnimatePresence>
+        {resultOpen && result && (
+          <motion.div
+            className={styles.modalOverlay}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setResultOpen(false)}
+          >
+            <motion.div
+              className={styles.modalWrap}
+              initial={{ opacity: 0, y: 28, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 16, scale: 0.97 }}
+              transition={{ type: "spring", damping: 26, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Tu ruta sugerida"
+            >
+              <ResultCard
+                result={result}
+                userData={userData}
+                onClose={() => setResultOpen(false)}
+                onRestart={restart}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -358,76 +410,89 @@ function TextField({ onSubmit }: { onSubmit: (text: string) => void }) {
 function ResultCard({
   result,
   userData,
+  onClose,
   onRestart,
 }: {
   result: RutaSugerida;
   userData: UserData;
+  onClose: () => void;
   onRestart: () => void;
 }) {
   const { pilar, tagline, descripcion, ruta, acciones, perfil, color, nombre } = result;
 
   return (
-    <motion.div initial={{ opacity: 0, y: 18, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.5, ease: "easeOut" }}>
-      <GlowCard glow={color}>
-        <div className={styles.result}>
-          <div className={styles.resultHeader}>
-            <span className={styles.resultKicker}>TU RUTA SUGERIDA</span>
-            <span className={styles.resultPilarTag} style={{ "--tag": color } as CSSProperties}>
-              Pilar · {pilar}
-            </span>
-          </div>
+    <GlowCard glow={color}>
+      <div className={styles.modalBanner} style={{ "--banner": color } as CSSProperties}>
+        <Image src="/orb.svg" alt="" width={46} height={46} className={styles.modalBannerOrb} unoptimized />
+        <div className={styles.modalBannerText}>
+          <span className={styles.modalBannerKicker}>TU RUTA SUGERIDA</span>
+          <h2 className={styles.modalBannerTitle}>{pilar}</h2>
+          <span className={styles.modalBannerTagline}>{tagline}</span>
+        </div>
+        <button
+          type="button"
+          className={styles.modalClose}
+          onClick={onClose}
+          aria-label="Cerrar"
+        >
+          ✕
+        </button>
+      </div>
 
-          <h2 className={styles.resultTitle}>
-            {pilar}{" "}
-            <span className={styles.resultTagline} style={{ color }}>
-              · {tagline}
-            </span>
-          </h2>
+      <div className={styles.modalBody} style={{ "--acc": color } as CSSProperties}>
+        <div className={styles.modalGreet}>
+          <p>{perfil}</p>
+          <p className={styles.modalGreetDesc}>{descripcion}</p>
+        </div>
 
-          <p className={styles.resultPerfil}>{perfil}</p>
-
-          <p className={styles.resultDesc}>{descripcion}</p>
-
-          <div className={styles.resultRuta}>
-            <span className={styles.resultRutaLabel}>Ruta recomendada</span>
-            <span className={styles.resultRutaValue}>{ruta}</span>
-          </div>
-
-          <div className={styles.resultAcciones}>
-            <span className={styles.resultRutaLabel}>Primeros pasos</span>
-            <ul>
-              {acciones.map((accion) => (
-                <li key={accion}>
-                  <span className={styles.resultCheck} aria-hidden="true">✦</span>
-                  {accion}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className={styles.resultRecap}>
-            <span className={styles.resultRutaLabel}>Tu perfil</span>
-            <div className={styles.resultRecapChips}>
-              <Chip label={nombre} accent={color} />
-              {userData.cursos_preferidos.slice(0, 2).map((c) => (
-                <Chip key={c} label={c} accent={color} />
-              ))}
-              <Chip label={userData.habilidad_a_desarrollar || "Habilidad en desarrollo"} accent={color} />
-              {userData.hobbies.slice(0, 2).map((h) => (
-                <Chip key={h} label={h} accent={color} />
-              ))}
-              <Chip label={`“${userData.motivacion}”`} accent={color} />
-            </div>
-          </div>
-
-          <div className={styles.resultActions}>
-            <Button onClick={onRestart}>Reiniciar conversación</Button>
-            <Button variant="ghost" onClick={onRestart}>
-              Conocer LEAD UPN
-            </Button>
+        <div className={styles.modalRuta}>
+          <span className={styles.modalLabel}>Ruta recomendada</span>
+          <div className={styles.modalRutaValue}>
+            {ruta}
           </div>
         </div>
-      </GlowCard>
-    </motion.div>
+
+        <div className={styles.modalPasos}>
+          <span className={styles.modalLabel}>Primeros pasos</span>
+          <ol>
+            {acciones.map((accion, i) => (
+              <li key={accion}>
+                <span className={styles.modalPasoNum}>
+                  {i + 1}
+                </span>
+                {accion}
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div className={styles.modalRecap}>
+          <span className={styles.modalLabel}>Tu perfil</span>
+          <div className={styles.modalChips}>
+            <Chip label={nombre} accent={color} />
+            {userData.cursos_preferidos.slice(0, 2).map((c) => (
+              <Chip key={c} label={c} accent={color} />
+            ))}
+            <Chip label={userData.habilidad_a_desarrollar || "Habilidad en desarrollo"} accent={color} />
+            {userData.hobbies.slice(0, 2).map((h) => (
+              <Chip key={h} label={h} accent={color} />
+            ))}
+            <Chip label={`“${userData.motivacion}”`} accent={color} />
+          </div>
+        </div>
+
+        <div className={styles.modalActions}>
+          <Button onClick={onRestart}>Reiniciar conversación</Button>
+          <a
+            href="https://leadupn.page/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.linkButton}
+          >
+            Conocer LEAD UPN ↗
+          </a>
+        </div>
+      </div>
+    </GlowCard>
   );
 }
