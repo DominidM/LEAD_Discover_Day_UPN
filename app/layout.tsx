@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk, Instrument_Serif } from "next/font/google";
+import { Inter, Space_Grotesk, Instrument_Serif, Poppins } from "next/font/google";
 import Cursor from "@/components/ui/Cursor";
 import "./globals.scss";
 
@@ -21,6 +21,13 @@ const instrumentSerif = Instrument_Serif({
   weight: "400",
   style: ["normal", "italic"],
   variable: "--font-instrument-serif",
+  display: "swap",
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["700", "800"],
+  variable: "--font-poppins",
   display: "swap",
 });
 
@@ -56,7 +63,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${spaceGrotesk.variable} ${inter.variable} ${instrumentSerif.variable}`}>
+      <body className={`${spaceGrotesk.variable} ${inter.variable} ${instrumentSerif.variable} ${poppins.variable}`}>
         <div className="app-backdrop" aria-hidden="true" />
         <div className="app-grain" aria-hidden="true" />
         <Cursor />

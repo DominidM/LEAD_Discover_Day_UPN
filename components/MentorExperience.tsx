@@ -23,6 +23,11 @@ type Entry =
 
 let entryId = 0;
 
+const MAX_ENTRIES = 16;
+
+const trimEntries = (list: Entry[]) =>
+  list.length > MAX_ENTRIES ? list.slice(list.length - MAX_ENTRIES) : list;
+
 const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 const formatAnswer = (value: string | string[]): string =>
@@ -80,11 +85,11 @@ export default function MentorExperience() {
     new Promise<void>((resolve) => {
       const id = ++entryId;
       typeResolvers.current.set(id, resolve);
-      setEntries((prev) => [...prev, { kind: "mentor", text, id }]);
+      setEntries((prev) => trimEntries([...prev, { kind: "mentor", text, id }]));
     });
 
   const pushUser = (text: string) =>
-    setEntries((prev) => [...prev, { kind: "user", text, id: ++entryId }]);
+    setEntries((prev) => trimEntries([...prev, { kind: "user", text, id: ++entryId }]));
 
   const waitForAnswer = (index: number) =>
     new Promise<string | string[]>((resolve) => {

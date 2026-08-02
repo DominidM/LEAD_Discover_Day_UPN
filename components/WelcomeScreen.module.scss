@@ -3,8 +3,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 0;
-  padding: 24px 0 12px;
+  min-height: calc(100vh + 40px);
+  min-height: calc(100dvh + 40px);
+  padding: 158px 0 12px;
 }
 
 .inner {
