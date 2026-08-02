@@ -133,18 +133,38 @@ function buildRecommendPrompt(userData: UserData): string {
   ].join("\n");
 }
 
+// Limpia posibles "autoverificaciones" que el modelo pueda escupir en la
+// respuesta (label/asteriscos/numeración/checklist) dejando solo el mensaje.
+function cleanReply(text: string): string {
+  const meta =
+    /(\bChecked\b|\bRules?\b|\bChecklist\b|\bStep\b|\bVerificad|\bComprobad|\*+|-+\s*[0-9]|^\s*[0-9]+\.)|("instead of"|"No mention"|"per the rules"|"Do not"|"Must not"|"no mention")/i;
+  const lines = text
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter((l) => l && !meta.test(l));
+  let out = lines.join(" ").trim();
+  // Recorta a partir del último punto final razonable si quedó cola
+  const lastPeriod = out.lastIndexOf(".");
+  if (lastPeriod > 20 && out.length - lastPeriod > 160) {
+    out = out.slice(0, lastPeriod + 1);
+  }
+  return out;
+}
+
 function buildReplyPrompt(userData: UserData, message: string): string {
   const nombre = userData.nombre.trim() || "estudiante";
   return [
-    `Actúa como Auki, el mentor de LEAD UPN. Estás conversando con ${nombre}.`,
+    `Eres Auki, el mentor IA de LEAD UPN, conversando con ${nombre}.`,
     `Contexto de sus respuestas:`,
     JSON.stringify(userData, null, 2),
     ``,
     `La última respuesta del estudiante fue: "${message}".`,
-    `Responde como Auki con un mensaje de 3-4 frases completas, cercano, motivador y entusiasta, reaccionando a esa respuesta.`,
-    `El mensaje debe terminar con un punto final y no quedar a medio escribir.`,
-    `No uses emojis. No uses rótulos, numeración ni texto como "Checking Sentence Count". Escribe solo el mensaje de Auki.`,
-    `No hagas preguntas nuevas, no repitas literalmente sus palabras y no menciones pilares todavía.`,
+    `Tu respuesta es ÚNICAMENTE el mensaje que le dices ahora a ${nombre} en primera persona. Escribe 3-4 frases completas, cercanas, motivadoras y entusiastas, reaccionando a esa respuesta.`,
+    `Reglas de formato:`,
+    `1. Empieza directamente con la frase de Auki.`,
+    `2. Termina con un punto final.`,
+    `3. Escribe solo el mensaje final de Auki. Prohibido emitir razonamiento, notas, etiquetas, asteriscos, viñetas, listas numeradas, verificaciones, "Checked", "Rules", auto-evaluaciones o cualquier texto fuera del mensaje.`,
+    `4. Sin emojis.`,
   ].join("\n");
 }
 
@@ -257,7 +277,7 @@ export async function onRequestPost(context: {
         model,
         700,
       );
-      return json({ reply: text });
+      return json({ reply: cleanReply(text) });
     }
 
     const ruta = await recommend(userData, apiKeys, model);

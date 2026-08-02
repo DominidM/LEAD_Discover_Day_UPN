@@ -173,8 +173,9 @@ export default function MentorExperience() {
       await wait(140);
     }
 
-    setSpeaking(true);
+    setThinking(true);
     const aiReply = await mentor.getReply(data, data.motivacion);
+    setThinking(false);
     if (aiReply) {
       await pushMentor(aiReply);
       await wait(140);
@@ -383,7 +384,7 @@ export default function MentorExperience() {
                     <span className={styles.dot} />
                     <span className={styles.dot} />
                     <span className={styles.dot} />
-                    <span className={styles.thinkingText}>Auki está analizando tu perfil…</span>
+                    <span className={styles.thinkingText}>Auki está escribiendo…</span>
                   </motion.div>
                 )}
 
