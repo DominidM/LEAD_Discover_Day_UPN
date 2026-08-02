@@ -76,7 +76,7 @@ export default function WelcomeScreen({ onStart }: WelcomeScreenProps) {
           </div>
 
           <div className={styles.actions}>
-            <Button onClick={onStart} size="lg">
+            <Button onClick={onStart} size="lg" className={styles.startBtn}>
               Comenzar ahora
             </Button>
             <p className={styles.footnote}>Una charla, cinco pilares y un nuevo comienzo.</p>

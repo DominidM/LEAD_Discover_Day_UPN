@@ -643,6 +643,21 @@
 }
 
 @media (max-width: 640px) {
+  .header {
+    padding-top: 10px;
+    padding-bottom: 6px;
+  }
+
+  .leadLogo {
+    width: 72px;
+    height: 72px;
+  }
+
+  .leadLogoImg {
+    width: 60px;
+    height: 60px;
+  }
+
   .bubbleMentor,
   .bubbleUser {
     max-width: 94%;

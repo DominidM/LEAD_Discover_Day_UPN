@@ -135,7 +135,7 @@ export default function MentorExperience() {
     await wait(450);
 
     setSpeaking(true);
-    await pushMentor(`¡Hola! 👋 Soy Auki, tu mentor IA de ${ORG_NAME}.`);
+    await pushMentor(`¡Hola! ✨ Soy Auki, tu mentor IA de ${ORG_NAME}.`);
     await wait(320);
     await pushMentor(
       "Voy a hacerte unas preguntas para conocerte y descubrir cuál de los pilares de LEAD es para ti. Vamos paso a paso.",
