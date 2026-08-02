@@ -249,7 +249,7 @@
 
 .modalWrap {
   width: 100%;
-  max-width: 620px;
+  max-width: 640px;
 }
 
 // Card del modal: noche sólida, sin degradado (overrides GlowCard).
@@ -324,12 +324,14 @@
 .modalBannerImage {
   position: relative;
   width: 100%;
-  height: 220px;
+  height: 260px;
   overflow: hidden;
+  background: var(--night);
 }
 
 .modalBannerImg {
-  object-fit: cover;
+  object-fit: contain;
+  object-position: top center;
 }
 
 .modalBannerGradient {
@@ -337,9 +339,10 @@
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(1, 7, 35, 0.25) 0%,
-    rgba(1, 7, 35, 0.55) 50%,
-    rgba(1, 7, 35, 0.92) 85%,
+    rgba(1, 7, 35, 0) 0%,
+    rgba(1, 7, 35, 0.2) 40%,
+    rgba(1, 7, 35, 0.5) 60%,
+    rgba(1, 7, 35, 0.8) 80%,
     var(--night) 100%
   );
 }
@@ -347,23 +350,13 @@
 .modalBannerContent {
   position: relative;
   display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 0 28px 26px;
-  margin-top: -40px;
-  z-index: 1;
-}
-
-.modalBannerOrb {
-  flex-shrink: 0;
-  width: 48px;
-  height: 48px;
-}
-
-.modalBannerText {
-  display: flex;
   flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 0 32px 32px;
+  margin-top: -48px;
+  z-index: 1;
 }
 
 .modalBannerKicker {
@@ -376,7 +369,7 @@
 
 .modalBannerTitle {
   font-family: var(--font-display);
-  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
   font-weight: 700;
   color: var(--white);
   line-height: 1.2;
@@ -387,6 +380,8 @@
   font-style: italic;
   font-size: 1rem;
   color: var(--gold-light);
+  max-width: 420px;
+  margin-top: 4px;
 }
 
 // Cuerpo del modal
@@ -394,30 +389,32 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  padding: 26px 30px 30px;
+  gap: 28px;
+  padding: 0 30px 34px;
   z-index: 1;
 }
 
 .modalGreet {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 16px 18px;
+  gap: 12px;
+  padding: 22px 24px;
   border-radius: var(--radius);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--lead);
+  background: color-mix(in srgb, var(--surface) 60%, var(--night));
+  border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+  line-height: 1.65;
 }
 
 .modalGreet p {
   font-size: 1.02rem;
   color: var(--white);
+  line-height: 1.65;
 }
 
 .modalGreetDesc {
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   color: var(--muted);
+  line-height: 1.65 !important;
 }
 
 .modalLabel {
@@ -449,34 +446,33 @@
 
 .modalPasos ol {
   list-style: none;
-  margin: 10px 0 0;
+  margin: 12px 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .modalPasos li {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
+  align-items: center;
+  gap: 14px;
   color: var(--muted-strong);
 }
 
 .modalPasoNum {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   flex-shrink: 0;
   display: grid;
   place-items: center;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   color: var(--ink);
   background: var(--lead);
   box-shadow: 0 0 14px color-mix(in srgb, var(--lead) 40%, transparent);
-  margin-top: 2px;
 }
 
 .modalRecap {
@@ -650,11 +646,16 @@
     max-width: 94%;
   }
 
-  .modalBanner {
-    padding: 24px 22px 20px;
+  .modalBannerImage {
+    height: 190px;
+  }
+
+  .modalBannerContent {
+    padding: 0 22px 24px;
+    margin-top: -36px;
   }
 
   .modalBody {
-    padding: 22px;
+    padding: 0 22px 28px;
   }
 }

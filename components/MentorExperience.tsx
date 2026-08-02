@@ -511,12 +511,9 @@ function ResultCard({
           <div className={styles.modalBannerGradient} />
         </div>
         <div className={styles.modalBannerContent}>
-          <GuiaMascot state="greeting" size={48} mode="avatar" className={styles.modalBannerOrb} />
-          <div className={styles.modalBannerText}>
-            <span className={styles.modalBannerKicker}>TU RUTA SUGERIDA</span>
-            <h2 className={styles.modalBannerTitle}>{pilar}</h2>
-            <span className={styles.modalBannerTagline}>{tagline}</span>
-          </div>
+          <span className={styles.modalBannerKicker}>TU RUTA SUGERIDA</span>
+          <h2 className={styles.modalBannerTitle}>{pilar}</h2>
+          <span className={styles.modalBannerTagline}>{tagline}</span>
         </div>
       </div>
 
