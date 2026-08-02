@@ -36,6 +36,7 @@ async function callGemini(
   wantJson: boolean,
   model: string,
   maxTokens = 1024,
+  temperature = 0.9,
 ): Promise<string> {
   let currentKeyIndex = 0;
   let lastErr: unknown = null;
@@ -51,7 +52,7 @@ async function callGemini(
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }], role: "user" }],
         generationConfig: {
-          temperature: 0.9,
+          temperature,
           maxOutputTokens: maxTokens,
           ...(wantJson ? { responseMimeType: "application/json" } : {}),
         },
@@ -143,10 +144,22 @@ function cleanReply(text: string): string {
     .map((l) => l.trim())
     .filter((l) => l && !meta.test(l));
   let out = lines.join(" ").trim();
-  // Recorta a partir del último punto final razonable si quedó cola
+  // Si quedó cola demasiado larga tras el último punto, cortar ahí.
   const lastPeriod = out.lastIndexOf(".");
   if (lastPeriod > 20 && out.length - lastPeriod > 160) {
     out = out.slice(0, lastPeriod + 1);
+  }
+  // Truncado: si NO termina en puntuación final, quitar el fragmento incompleto
+  // (ej. "...transformar la chis") para no mostrar a medias.
+  if (out && !/[.!?…]$/.test(out)) {
+    const words = out.split(/\s+/);
+    // Quitar últimas 1-2 palabras cortadas cuando el último fragmento terminó en
+    // una palabra completa o cortada sin cerrar.
+    if (words.length > 1) {
+      words.pop();
+      out = words.join(" ").trim();
+    }
+    if (out && out.length < 3) out = "";
   }
   return out;
 }
@@ -275,7 +288,8 @@ export async function onRequestPost(context: {
         apiKeys,
         false,
         model,
-        700,
+        1024,
+        0.7,
       );
       return json({ reply: cleanReply(text) });
     }
