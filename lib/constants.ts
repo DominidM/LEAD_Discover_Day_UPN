@@ -24,4 +24,5 @@ export interface Pilar {
   acciones: string[];
   color: string;
   imagen: string;
+  foto: string;
 }

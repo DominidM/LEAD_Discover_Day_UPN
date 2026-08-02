@@ -293,6 +293,36 @@
   background: none;
 }
 
+// Botón de cierre: círculo transparente en la esquina superior derecha
+.modalClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(1, 7, 35, 0.35);
+  backdrop-filter: blur(8px);
+  color: var(--white);
+  font-size: 1rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition:
+    background var(--speed-fast) var(--ease-out),
+    border-color var(--speed-fast) var(--ease-out),
+    transform var(--speed-fast) var(--ease-out);
+}
+
+.modalClose:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.65);
+  transform: scale(1.08);
+}
+
 // Banner: fijo arriba, no scrollea
 .modalBanner {
   flex-shrink: 0;
@@ -345,7 +375,7 @@
 .modalBannerImage {
   position: relative;
   width: 100%;
-  height: 260px;
+  height: 200px;
   overflow: hidden;
   background: var(--night);
 }
@@ -375,8 +405,8 @@
   align-items: center;
   text-align: center;
   gap: 6px;
-  padding: 0 32px 32px;
-  margin-top: -48px;
+  padding: 0 32px 28px;
+  margin-top: -36px;
   z-index: 1;
 }
 
@@ -663,6 +693,97 @@
   text-shadow: 0 0 24px rgba(255, 184, 25, 0.4);
 }
 
+// Email input en el modal
+.resultPrompt {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  align-self: flex-start;
+  max-width: 88%;
+  padding: 4px 0 0 44px;
+}
+
+.modalEmail {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modalEmailRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.modalEmailInput {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 13px 18px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--white);
+  font-size: 1rem;
+  outline: none;
+  transition:
+    border-color var(--speed-fast) var(--ease-out),
+    box-shadow var(--speed-fast) var(--ease-out);
+}
+
+.modalEmailInput::placeholder {
+  color: var(--muted);
+}
+
+.modalEmailInput:focus {
+  border-color: rgba(255, 184, 25, 0.65);
+  box-shadow: 0 0 0 3px rgba(255, 184, 25, 0.15);
+}
+
+.modalEmailInput:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+// Toast arriba a la derecha
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  max-width: 360px;
+  padding: 14px 20px;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.45;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  animation: toast-in 0.35s ease-out;
+  pointer-events: none;
+}
+
+.toastSuccess {
+  background: var(--surface-strong);
+  border: 1px solid rgba(78, 205, 196, 0.55);
+  color: #4ecdc4;
+}
+
+.toastError {
+  background: var(--surface-strong);
+  border: 1px solid rgba(229, 78, 101, 0.55);
+  color: #e54e65;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .marqueeTrack {
     animation: none;
@@ -734,20 +855,20 @@
   }
 
   .modalClose {
-    top: 10px;
-    right: 10px;
-    width: 32px;
-    height: 32px;
-    font-size: 0.85rem;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
   }
 
   .modalBannerImage {
-    height: 140px;
+    height: 120px;
   }
 
   .modalBannerContent {
-    padding: 0 20px 20px;
-    margin-top: -28px;
+    padding: 0 20px 18px;
+    margin-top: -22px;
     gap: 4px;
   }
 
@@ -810,5 +931,26 @@
 
   .modalRecapText {
     font-size: 0.9rem;
+  }
+
+  .modalEmailRow {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modalEmailInput {
+    width: 100%;
+  }
+
+  .toast {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+    max-width: none;
+  }
+
+  .resultPrompt {
+    max-width: 94%;
+    padding: 2px 0 0 40px;
   }
 }

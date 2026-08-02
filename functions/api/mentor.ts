@@ -35,6 +35,7 @@ async function callGemini(
   apiKeys: string[],
   wantJson: boolean,
   model: string,
+  maxTokens = 1024,
 ): Promise<string> {
   let currentKeyIndex = 0;
   let lastErr: unknown = null;
@@ -51,7 +52,7 @@ async function callGemini(
         contents: [{ parts: [{ text: prompt }], role: "user" }],
         generationConfig: {
           temperature: 0.9,
-          maxOutputTokens: 1024,
+          maxOutputTokens: maxTokens,
           ...(wantJson ? { responseMimeType: "application/json" } : {}),
         },
       }),
@@ -140,7 +141,9 @@ function buildReplyPrompt(userData: UserData, message: string): string {
     JSON.stringify(userData, null, 2),
     ``,
     `La última respuesta del estudiante fue: "${message}".`,
-    `Responde como Auki con UN mensaje corto (1-2 frases), cercano, motivador y entusiasta, reaccionando a esa respuesta.`,
+    `Responde como Auki con un mensaje de 3-4 frases completas, cercano, motivador y entusiasta, reaccionando a esa respuesta.`,
+    `El mensaje debe terminar con un punto final y no quedar a medio escribir.`,
+    `No uses emojis. No uses rótulos, numeración ni texto como "Checking Sentence Count". Escribe solo el mensaje de Auki.`,
     `No hagas preguntas nuevas, no repitas literalmente sus palabras y no menciones pilares todavía.`,
   ].join("\n");
 }
@@ -183,7 +186,7 @@ async function recommend(
   apiKeys: string[],
   model: string,
 ): Promise<RutaSugerida> {
-  const text = await callGemini(buildRecommendPrompt(userData), apiKeys, true, model);
+  const text = await callGemini(buildRecommendPrompt(userData), apiKeys, true, model, 1552);
   const parsed = parseJson(text) ?? {};
   const pilar = matchPilar(String(parsed.pilar ?? ""));
   const nombre = userData.nombre.trim() || "estudiante";
@@ -207,6 +210,7 @@ async function recommend(
       `¡${nombre}, tu perfil conecta con el pilar de ${pilar.nombre}!`,
     ),
     imagen: pilar.imagen,
+    foto: pilar.foto,
     closing: str(
       parsed.cierre,
       `¡Listo, ${nombre}! Tu pilar es ${pilar.nombre}. Nos vemos en el Discover Day.`,
@@ -251,6 +255,7 @@ export async function onRequestPost(context: {
         apiKeys,
         false,
         model,
+        700,
       );
       return json({ reply: text });
     }
@@ -258,6 +263,8 @@ export async function onRequestPost(context: {
     const ruta = await recommend(userData, apiKeys, model);
     return json({ ruta });
   } catch (e) {
-    return json({ error: e instanceof Error ? e.message : String(e) }, 500);
+    const message = e instanceof Error ? e.message : String(e);
+    console.error("[api/mentor] error:", e);
+    return json({ error: message, detail: "Revisa los logs de wrangler para más información." }, 500);
   }
 }

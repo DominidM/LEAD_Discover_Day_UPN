@@ -7,6 +7,7 @@ const { spawn } = require("node:child_process");
 const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
+const isWin = process.platform === "win32";
 
 // Ejecutamos los entry points JS con Node directamente. Así evitamos el bug de
 // Node.js >=24 en Windows (spawn EINVAL al ejecutar archivos .cmd) y también
@@ -39,7 +40,16 @@ function run(label, args, port) {
 function shutdown(code) {
   for (const c of children) {
     try {
-      c.kill("SIGTERM");
+      if (isWin && c.pid) {
+        // En Windows SIGTERM no mata bien subprocesos. Usamos taskkill /T
+        // para terminar todo el árbol de procesos (wrangler/miniflare/next).
+        spawn("taskkill", ["/PID", String(c.pid), "/T", "/F"], {
+          shell: false,
+          stdio: "ignore",
+        });
+      } else {
+        c.kill("SIGTERM");
+      }
     } catch {
       /* noop */
     }

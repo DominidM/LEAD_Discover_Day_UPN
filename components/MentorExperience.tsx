@@ -14,6 +14,7 @@ import WelcomeScreen from "./WelcomeScreen";
 import { steps } from "@/lib/mock-data";
 import { emptyUserData, type RutaSugerida, type UserData } from "@/lib/ai/mentor";
 import { GeminiMentor } from "@/lib/ai/gemini-mentor";
+import { sendPilarEmail, type EmailStatus } from "@/lib/email";
 import { ORG_NAME } from "@/lib/constants";
 import styles from "./MentorExperience.module.scss";
 
@@ -50,9 +51,15 @@ export default function MentorExperience() {
   const [thinking, setThinking] = useState(false);
   const [result, setResult] = useState<RutaSugerida | null>(null);
   const [resultOpen, setResultOpen] = useState(false);
+  const [toast, setToast] = useState<EmailStatus | null>(null);
   const [speaking, setSpeaking] = useState(false);
   const [welcome, setWelcome] = useState(true);
   const [navHidden, setNavHidden] = useState(false);
+
+  const showToast = (status: EmailStatus) => {
+    setToast(status);
+    setTimeout(() => setToast(null), 4000);
+  };
 
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof document !== "undefined") {
@@ -187,7 +194,6 @@ export default function MentorExperience() {
     );
     setSpeaking(false);
 
-    setResultOpen(true);
     runningRef.current = false;
   };
 
@@ -308,7 +314,7 @@ export default function MentorExperience() {
           title={ORG_NAME}
         >
           <Image
-            src="/assets/logo-lead.webp"
+            src="https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785680406/logo-lead_p1ymto.webp"
             alt={ORG_NAME}
             width={102}
             height={102}
@@ -382,6 +388,17 @@ export default function MentorExperience() {
                 )}
 
                 {inputArea}
+
+                {result && !resultOpen && !thinking && activeStep === null && (
+                  <motion.div
+                    className={styles.resultPrompt}
+                    initial={{ opacity: 0, y: 12, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ type: "spring", damping: 24, stiffness: 280 }}
+                  >
+                    <Button onClick={() => setResultOpen(true)}>Ver mi ruta</Button>
+                  </motion.div>
+                )}
 
                 <div className={styles.scrollSpacer} />
               </div>
@@ -468,8 +485,25 @@ export default function MentorExperience() {
                 result={result}
                 onClose={() => setResultOpen(false)}
                 onRestart={restart}
+                onToast={showToast}
               />
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            className={`${styles.toast} ${toast.success ? styles.toastSuccess : styles.toastError}`}
+            role="status"
+            aria-live="polite"
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 100 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
+            {toast.message}
           </motion.div>
         )}
       </AnimatePresence>
@@ -513,13 +547,26 @@ function ResultCard({
   result,
   onClose,
   onRestart,
+  onToast,
 }: {
   result: RutaSugerida;
   onClose: () => void;
   onRestart: () => void;
+  onToast: (status: EmailStatus) => void;
 }) {
   const { pilar, tagline, descripcion, ruta, acciones, perfil, color, imagen, closing } =
     result;
+
+  const [email, setEmail] = useState("");
+  const [sending, setSending] = useState(false);
+
+  const handleSendEmail = async () => {
+    if (sending) return;
+    setSending(true);
+    const status = await sendPilarEmail(email, result);
+    onToast(status);
+    setSending(false);
+  };
 
   return (
     <GlowCard glow={color} className={styles.modalCard}>
@@ -581,6 +628,29 @@ function ResultCard({
         <div className={styles.modalRecap}>
           <span className={styles.modalLabel}>Mensaje de Auki</span>
           <p className={styles.modalRecapText}>{closing}</p>
+        </div>
+
+        <div className={styles.modalEmail}>
+          <span className={styles.modalLabel}>Enviar mi ruta al correo</span>
+          <div className={styles.modalEmailRow}>
+            <input
+              type="email"
+              className={styles.modalEmailInput}
+              placeholder="tu@correo.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") void handleSendEmail();
+              }}
+              disabled={sending}
+            />
+            <Button
+              onClick={() => void handleSendEmail()}
+              disabled={sending || !email.trim()}
+            >
+              {sending ? "Enviando…" : "Enviar"}
+            </Button>
+          </div>
         </div>
       </div>
 

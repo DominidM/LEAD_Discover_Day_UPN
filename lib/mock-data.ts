@@ -95,7 +95,8 @@ export const pilares: Pilar[] = [
       "Colabora con organizaciones y comunidades reales",
     ],
     color: "#e54e65",
-    imagen: "/assets/lead/impacto_comunitario.DqNJq7Zk.webp",
+    imagen: "https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785680244/IMPACT-COMUNITARIO_wcg4wb.webp",
+    foto: "https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785680245/IMPACTO-COMUNITARIO_o3lrmz.jpg",
   },
   {
     id: "desarrollo_profesional",
@@ -110,7 +111,8 @@ export const pilares: Pilar[] = [
       "Amplía tu red de contactos y networking",
     ],
     color: "#7e34a0",
-    imagen: "/assets/lead/desarrollo_profesional.COR-ZW5U.webp",
+    imagen: "https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785680244/DESARROLLO-PROFESIONAL_kshtn3.webp",
+    foto: "https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785680245/DESARROLLO-PROFESIONAL_fq5uzq.jpg",
   },
   {
     id: "desarrollo_capitulo",
@@ -125,7 +127,8 @@ export const pilares: Pilar[] = [
       "Integra nuevos miembros y fortalece el equipo",
     ],
     color: "#4ecdc4",
-    imagen: "/assets/lead/desarrollo_capitulo.BkXy_Vtg.webp",
+    imagen: "https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785680244/DESARROLLO-CAPITULO_byshck.webp",
+    foto: "https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785680245/DESARROLLO-CAPITULO_jo5kqh.jpg",
   },
   {
     id: "excelencia_femenina",
@@ -140,7 +143,8 @@ export const pilares: Pilar[] = [
       "Construye redes de apoyo y sororidad",
     ],
     color: "#ffb819",
-    imagen: "/assets/lead/excelencia_femenina.NCZXg3Ri.webp",
+    imagen: "https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785680244/IMPACTO-FEMENINA_z9kj1q.webp",
+    foto: "https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785680245/IMPACTO-FEMENINA_gs9q07.jpg",
   },
   {
     id: "lead_academia",
@@ -155,7 +159,8 @@ export const pilares: Pilar[] = [
       "Conviértete en mentor de nuevos miembros",
     ],
     color: "#ffd04a",
-    imagen: "/assets/lead/lead_academia.DNA_qFqj.webp",
+    imagen: "https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785680244/LEAD-ACADEMIA_b2rmlt.webp",
+    foto: "https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785680245/LEAD-ACADEMIA_yrgrcg.jpg",
   },
 ];
 

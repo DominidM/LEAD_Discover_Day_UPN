@@ -42,7 +42,7 @@ export default function WelcomeScreen({ onStart }: WelcomeScreenProps) {
               title={ORG_NAME}
             >
               <Image
-                src="/assets/logo-lead.webp"
+                src="https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785680406/logo-lead_p1ymto.webp"
                 alt={ORG_NAME}
                 width={56}
                 height={56}

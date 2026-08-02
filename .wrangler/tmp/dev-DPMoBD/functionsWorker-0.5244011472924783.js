@@ -17,7 +17,8 @@ var pilares = [
       "Colabora con organizaciones y comunidades reales"
     ],
     color: "#e54e65",
-    imagen: "/assets/lead/impacto_comunitario.DqNJq7Zk.webp"
+    imagen: "/assets/lead-auki/IMPACT-COMUNITARIO.webp",
+    foto: "/assets/lead-foto/IMPACTO-COMUNITARIO.jpeg"
   },
   {
     id: "desarrollo_profesional",
@@ -31,7 +32,8 @@ var pilares = [
       "Ampl\xEDa tu red de contactos y networking"
     ],
     color: "#7e34a0",
-    imagen: "/assets/lead/desarrollo_profesional.COR-ZW5U.webp"
+    imagen: "/assets/lead-auki/DESARROLLO-PROFESIONAL.webp",
+    foto: "/assets/lead-foto/DESARROLLO-PROFESIONAL.jpeg"
   },
   {
     id: "desarrollo_capitulo",
@@ -45,7 +47,8 @@ var pilares = [
       "Integra nuevos miembros y fortalece el equipo"
     ],
     color: "#4ecdc4",
-    imagen: "/assets/lead/desarrollo_capitulo.BkXy_Vtg.webp"
+    imagen: "/assets/lead-auki/DESARROLLO-CAPITULO.webp",
+    foto: "/assets/lead-foto/DESARROLLO-CAPITULO.jpeg"
   },
   {
     id: "excelencia_femenina",
@@ -59,7 +62,8 @@ var pilares = [
       "Construye redes de apoyo y sororidad"
     ],
     color: "#ffb819",
-    imagen: "/assets/lead/excelencia_femenina.NCZXg3Ri.webp"
+    imagen: "/assets/lead-auki/IMPACTO-FEMENINA.webp",
+    foto: "/assets/lead-foto/IMPACTO-FEMENINA.jpeg"
   },
   {
     id: "lead_academia",
@@ -73,7 +77,8 @@ var pilares = [
       "Convi\xE9rtete en mentor de nuevos miembros"
     ],
     color: "#ffd04a",
-    imagen: "/assets/lead/lead_academia.DNA_qFqj.webp"
+    imagen: "/assets/lead-auki/LEAD-ACADEMIA.webp",
+    foto: "/assets/lead-foto/LEAD-ACADEMIA.jpeg"
   }
 ];
 var DEFAULT_MODEL = "gemini-flash-latest";
@@ -236,6 +241,7 @@ async function recommend(userData, apiKeys, model) {
       `\xA1${nombre}, tu perfil conecta con el pilar de ${pilar.nombre}!`
     ),
     imagen: pilar.imagen,
+    foto: pilar.foto,
     closing: str(
       parsed.cierre,
       `\xA1Listo, ${nombre}! Tu pilar es ${pilar.nombre}. Nos vemos en el Discover Day.`

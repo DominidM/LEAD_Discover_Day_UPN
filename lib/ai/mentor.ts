@@ -24,6 +24,7 @@ export interface RutaSugerida {
   color: string;
   perfil: string;
   imagen: string;
+  foto: string;
   /** Mensaje de cierre que Auki muestra en el chat (generado por IA). */
   closing?: string;
 }

@@ -9,10 +9,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "deploy": "npm run build && wrangler pages deploy out",
-    "preview": "npm run build && wrangler pages dev out"
+    "deploy": "npm run build && npx wrangler pages deploy out",
+    "preview": "npm run build && npx wrangler pages dev out"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "framer-motion": "^12.9.2",
     "next": "^15.4.0",
     "react": "^19.1.0",

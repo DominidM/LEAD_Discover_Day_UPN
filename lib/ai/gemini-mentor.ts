@@ -38,12 +38,17 @@ export class GeminiMentor implements MentorProvider {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mode: "reply", userData, message }),
       });
-      if (!res.ok) throw new Error(`La API respondió ${res.status}`);
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        console.warn(`[Auki] API respondió ${res.status}: ${text.slice(0, 200)}`);
+        throw new Error(`La API respondió ${res.status}`);
+      }
       const data = (await res.json()) as { reply?: string };
       return data?.reply?.trim() ? data.reply.trim() : null;
     } catch (err) {
-      console.warn("[Auki] Respuesta IA no disponible.", err);
-      return null;
+      console.warn("[Auki] Respuesta IA no disponible, usando respuesta genérica.", err);
+      const nombre = userData.nombre.trim() || "estudiante";
+      return `¡Gracias por compartirlo, ${nombre}! Me encanta tu energía. Sigamos con la última pregunta para descubrir tu pilar.`;
     }
   }
 }
