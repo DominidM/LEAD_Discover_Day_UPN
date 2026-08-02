@@ -79,7 +79,7 @@ export default function WelcomeScreen({ onStart }: WelcomeScreenProps) {
             <Button onClick={onStart} size="lg">
               Comenzar ahora
             </Button>
-            <p className={styles.footnote}>Una charla, cuatro pilares y un nuevo comienzo.</p>
+            <p className={styles.footnote}>Una charla, cinco pilares y un nuevo comienzo.</p>
           </div>
         </motion.div>
 
