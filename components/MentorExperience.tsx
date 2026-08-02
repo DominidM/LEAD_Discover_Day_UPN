@@ -387,6 +387,20 @@ export default function MentorExperience() {
             ))}
           </div>
         </div>
+        <div className={styles.footerMeta}>
+          <span>© 2026 LeadUPN. All rights reserved.</span>
+          <span>
+            Designed &amp; Built by{" "}
+            <a
+              href="https://solvegrades.com/nosotros/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.footerLink}
+            >
+              SOLVEGRADES
+            </a>
+          </span>
+        </div>
       </footer>
 
       <AnimatePresence>

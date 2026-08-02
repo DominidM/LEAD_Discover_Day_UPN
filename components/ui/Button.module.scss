@@ -17,7 +17,7 @@
 }
 
 .primary {
-  background: linear-gradient(135deg, var(--gold-light), var(--gold) 55%, var(--gold-deep));
+  background: linear-gradient(135deg, var(--gold-light), #ffb819 55%, var(--gold-deep));
   color: var(--ink);
   box-shadow: var(--shadow-gold);
 }
@@ -28,7 +28,7 @@
 }
 
 .primary:hover {
-  box-shadow: var(--shadow-gold), 0 0 0 1px rgba(255, 208, 74, 0.5);
+  box-shadow: var(--shadow-gold), 0 0 0 1px rgba(255, 184, 25, 0.5);
 }
 
 .ghost {
