@@ -1,7 +1,7 @@
 import type { Pilar, StepConfig } from "./constants";
 
 // ============================================================
-// LEAD-GUÍA · Preguntas de la conversación guiada
+// LEAD · Preguntas de la conversación guiada
 // Cada paso acumula un campo en el JSON de `UserData`.
 // ============================================================
 
@@ -95,6 +95,7 @@ export const pilares: Pilar[] = [
       "Pregunta cómo empezar a liderar desde ahora",
     ],
     color: "#ffb819",
+    imagen: "/assets/lead/excelencia_femenina.NCZXg3Ri.webp",
   },
   {
     id: "innovacion",
@@ -109,6 +110,7 @@ export const pilares: Pilar[] = [
       "Pregunta cómo explorar la tecnología y crear ideas",
     ],
     color: "#ffd04a",
+    imagen: "/assets/lead/lead_academia.DNA_qFqj.webp",
   },
   {
     id: "impacto",
@@ -123,6 +125,7 @@ export const pilares: Pilar[] = [
       "Pregunta cómo generar impacto en tu comunidad",
     ],
     color: "#e54e65",
+    imagen: "/assets/lead/impacto_comunitario.DqNJq7Zk.webp",
   },
   {
     id: "desarrollo",
@@ -137,6 +140,7 @@ export const pilares: Pilar[] = [
       "Pregunta cómo dar tus primeros pasos hacia tu meta",
     ],
     color: "#7e34a0",
+    imagen: "/assets/lead/desarrollo_profesional.COR-ZW5U.webp",
   },
 ];
 

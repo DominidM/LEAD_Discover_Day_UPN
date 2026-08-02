@@ -68,7 +68,7 @@ export default function MentorExperience() {
       const next: Theme = prev === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", next);
       try {
-        localStorage.setItem("lead-guia-theme", next);
+        localStorage.setItem("auki-theme", next);
       } catch {
         /* noop */
       }
@@ -135,7 +135,7 @@ export default function MentorExperience() {
     await wait(450);
 
     setSpeaking(true);
-    await pushMentor(`¡Hola! 👋 Soy Guía, tu mentor IA de ${ORG_NAME}.`);
+    await pushMentor(`¡Hola! 👋 Soy Auki, tu mentor IA de ${ORG_NAME}.`);
     await wait(320);
     await pushMentor(
       "Voy a hacerte unas preguntas para conocerte y descubrir cuál de los pilares de LEAD es para ti. Vamos paso a paso.",
@@ -307,7 +307,7 @@ export default function MentorExperience() {
               state={thinking ? "thinking" : speaking ? "speaking" : "idle"}
               size={170}
             />
-            <div className={styles.orbLabel}>Guía</div>
+            <div className={styles.orbLabel}>Auki</div>
           </div>
 
           <main className={styles.main}>
@@ -355,7 +355,7 @@ export default function MentorExperience() {
                     <span className={styles.dot} />
                     <span className={styles.dot} />
                     <span className={styles.dot} />
-                    <span className={styles.thinkingText}>LEAD-GUÍA está analizando tu perfil…</span>
+                    <span className={styles.thinkingText}>Auki está analizando tu perfil…</span>
                   </motion.div>
                 )}
 
@@ -485,25 +485,39 @@ function ResultCard({
   onClose: () => void;
   onRestart: () => void;
 }) {
-  const { pilar, tagline, descripcion, ruta, acciones, perfil, color, nombre } = result;
+  const { pilar, tagline, descripcion, ruta, acciones, perfil, color, nombre, imagen } = result;
 
   return (
     <GlowCard glow={color} className={styles.modalCard}>
+      <button
+        type="button"
+        className={styles.modalClose}
+        onClick={onClose}
+        aria-label="Cerrar"
+      >
+        ✕
+      </button>
+
       <div className={styles.modalBanner}>
-              <GuiaMascot state="greeting" size={56} mode="avatar" className={styles.modalBannerOrb} />
-        <div className={styles.modalBannerText}>
-          <span className={styles.modalBannerKicker}>TU RUTA SUGERIDA</span>
-          <h2 className={styles.modalBannerTitle}>{pilar}</h2>
-          <span className={styles.modalBannerTagline}>{tagline}</span>
+        <div className={styles.modalBannerImage}>
+          <Image
+            src={imagen}
+            alt={`Pilar ${pilar}`}
+            fill
+            unoptimized
+            sizes="(max-width: 640px) 100vw, 620px"
+            className={styles.modalBannerImg}
+          />
+          <div className={styles.modalBannerGradient} />
         </div>
-        <button
-          type="button"
-          className={styles.modalClose}
-          onClick={onClose}
-          aria-label="Cerrar"
-        >
-          ✕
-        </button>
+        <div className={styles.modalBannerContent}>
+          <GuiaMascot state="greeting" size={48} mode="avatar" className={styles.modalBannerOrb} />
+          <div className={styles.modalBannerText}>
+            <span className={styles.modalBannerKicker}>TU RUTA SUGERIDA</span>
+            <h2 className={styles.modalBannerTitle}>{pilar}</h2>
+            <span className={styles.modalBannerTagline}>{tagline}</span>
+          </div>
+        </div>
       </div>
 
       <div className={styles.modalBody}>
@@ -544,7 +558,7 @@ function ResultCard({
             {userData.hobbies.slice(0, 2).map((h) => (
               <Chip key={h} label={h} accent={color} />
             ))}
-            <Chip label={`“${userData.motivacion}”`} accent={color} />
+            <Chip label={`"${userData.motivacion}"`} accent={color} />
           </div>
         </div>
 

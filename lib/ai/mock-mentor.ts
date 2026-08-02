@@ -167,6 +167,7 @@ export class MockMentor implements MentorProvider {
       acciones: pilar.acciones,
       color: pilar.color,
       perfil,
+      imagen: pilar.imagen,
     };
   }
 }

@@ -294,12 +294,14 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--surface-strong);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
   color: var(--white);
   font-size: 0.95rem;
   display: grid;
   place-items: center;
+  cursor: pointer;
   transition:
     border-color var(--speed-fast) var(--ease-out),
     background var(--speed-fast) var(--ease-out);
@@ -307,24 +309,55 @@
 
 .modalClose:hover {
   border-color: rgba(255, 184, 25, 0.6);
-  background: rgba(255, 184, 25, 0.12);
+  background: rgba(255, 184, 25, 0.18);
 }
 
-// Banner del modal
+// Banner del modal con imagen de fondo
 .modalBanner {
   position: relative;
   display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.modalBannerImage {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.modalBannerImg {
+  object-fit: cover;
+}
+
+.modalBannerGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(1, 7, 35, 0.25) 0%,
+    rgba(1, 7, 35, 0.55) 50%,
+    rgba(1, 7, 35, 0.92) 85%,
+    var(--night) 100%
+  );
+}
+
+.modalBannerContent {
+  position: relative;
+  display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 30px 34px 26px;
-  background: var(--surface-strong);
-  border-bottom: 1px solid var(--border);
+  gap: 14px;
+  padding: 0 28px 26px;
+  margin-top: -40px;
+  z-index: 1;
 }
 
 .modalBannerOrb {
   flex-shrink: 0;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
 }
 
 .modalBannerText {
@@ -334,7 +367,7 @@
 }
 
 .modalBannerKicker {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -342,14 +375,17 @@
 }
 
 .modalBannerTitle {
-  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 700;
   color: var(--white);
+  line-height: 1.2;
 }
 
 .modalBannerTagline {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: var(--gold-light);
 }
 

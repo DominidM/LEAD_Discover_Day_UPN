@@ -1,6 +1,6 @@
 import type { UserData } from "./ai/mentor";
 
-export const BRAND_NAME = "LEAD-GUÍA";
+export const BRAND_NAME = "Auki · LEAD UPN";
 export const ORG_NAME = "LEAD UPN";
 export const TAGLINE = "Tu mentor IA de LEAD UPN.";
 
@@ -23,4 +23,5 @@ export interface Pilar {
   ruta: string;
   acciones: string[];
   color: string;
+  imagen: string;
 }

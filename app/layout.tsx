@@ -32,9 +32,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "LEAD-GUÍA · Mentor IA de LEAD UPN",
+  title: "Auki · Mentor IA de LEAD UPN",
   description:
-    "LEAD-GUÍA es el mentor IA de LEAD UPN. Responde unas preguntas y descubre tu pilar y tu ruta dentro del ecosistema LEAD.",
+    "Auki es el mentor IA de LEAD UPN. Responde unas preguntas y descubre tu pilar y tu ruta dentro del ecosistema LEAD.",
   keywords: [
     "LEAD UPN",
     "mentor IA",
@@ -59,7 +59,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("lead-guia-theme");if(t==="light"){document.documentElement.setAttribute("data-theme","light");}}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem("auki-theme");if(t==="light"){document.documentElement.setAttribute("data-theme","light");}}catch(e){}})();`,
           }}
         />
       </head>
