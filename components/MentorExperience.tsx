@@ -68,7 +68,7 @@ export default function MentorExperience() {
       const next: Theme = prev === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", next);
       try {
-        localStorage.setItem("lead-guia-theme", next);
+        localStorage.setItem("auki-theme", next);
       } catch {
         /* noop */
       }
@@ -135,7 +135,7 @@ export default function MentorExperience() {
     await wait(450);
 
     setSpeaking(true);
-    await pushMentor(`¡Hola! 👋 Soy Guía, tu mentor IA de ${ORG_NAME}.`);
+    await pushMentor(`¡Hola! 👋 Soy Auki, tu mentor IA de ${ORG_NAME}.`);
     await wait(320);
     await pushMentor(
       "Voy a hacerte unas preguntas para conocerte y descubrir cuál de los pilares de LEAD es para ti. Vamos paso a paso.",
@@ -307,7 +307,7 @@ export default function MentorExperience() {
               state={thinking ? "thinking" : speaking ? "speaking" : "idle"}
               size={170}
             />
-            <div className={styles.orbLabel}>Guía</div>
+            <div className={styles.orbLabel}>Auki</div>
           </div>
 
           <main className={styles.main}>
@@ -355,7 +355,7 @@ export default function MentorExperience() {
                     <span className={styles.dot} />
                     <span className={styles.dot} />
                     <span className={styles.dot} />
-                    <span className={styles.thinkingText}>LEAD-GUÍA está analizando tu perfil…</span>
+                    <span className={styles.thinkingText}>Auki está analizando tu perfil…</span>
                   </motion.div>
                 )}
 
@@ -499,25 +499,43 @@ function ResultCard({
   onClose: () => void;
   onRestart: () => void;
 }) {
-  const { pilar, tagline, descripcion, ruta, acciones, perfil, color, nombre } = result;
+  const { pilar, tagline, descripcion, ruta, acciones, perfil, color, nombre, imagen } = result;
+
+  const cursos = userData.cursos_preferidos.slice(0, 2).join(" y ") || "tus cursos";
+  const hobbies = userData.hobbies.slice(0, 2).join(" y ") || "tus hobbies";
+  const habilidad = userData.habilidad_a_desarrollar || "crecer";
+  const motivacion = userData.motivacion || "lograrlo";
+
+  const perfilResumen = `${nombre}, tus elecciones reflejan un perfil claro. Te llama la atención ${cursos}, disfrutas ${hobbies} y quieres desarrollar tu habilidad en ${habilidad}. Lo que te mueve es "${motivacion}".`;
 
   return (
     <GlowCard glow={color} className={styles.modalCard}>
+      <button
+        type="button"
+        className={styles.modalClose}
+        onClick={onClose}
+        aria-label="Cerrar"
+      >
+        ✕
+      </button>
+
       <div className={styles.modalBanner}>
-              <GuiaMascot state="greeting" size={56} mode="avatar" className={styles.modalBannerOrb} />
-        <div className={styles.modalBannerText}>
+        <div className={styles.modalBannerImage}>
+          <Image
+            src={imagen}
+            alt={`Pilar ${pilar}`}
+            fill
+            unoptimized
+            sizes="(max-width: 640px) 100vw, 640px"
+            className={styles.modalBannerImg}
+          />
+          <div className={styles.modalBannerGradient} />
+        </div>
+        <div className={styles.modalBannerContent}>
           <span className={styles.modalBannerKicker}>TU RUTA SUGERIDA</span>
           <h2 className={styles.modalBannerTitle}>{pilar}</h2>
           <span className={styles.modalBannerTagline}>{tagline}</span>
         </div>
-        <button
-          type="button"
-          className={styles.modalClose}
-          onClick={onClose}
-          aria-label="Cerrar"
-        >
-          ✕
-        </button>
       </div>
 
       <div className={styles.modalBody}>
@@ -549,30 +567,20 @@ function ResultCard({
 
         <div className={styles.modalRecap}>
           <span className={styles.modalLabel}>Tu perfil</span>
-          <div className={styles.modalChips}>
-            <Chip label={nombre} accent={color} />
-            {userData.cursos_preferidos.slice(0, 2).map((c) => (
-              <Chip key={c} label={c} accent={color} />
-            ))}
-            <Chip label={userData.habilidad_a_desarrollar || "Habilidad en desarrollo"} accent={color} />
-            {userData.hobbies.slice(0, 2).map((h) => (
-              <Chip key={h} label={h} accent={color} />
-            ))}
-            <Chip label={`“${userData.motivacion}”`} accent={color} />
-          </div>
+          <p className={styles.modalRecapText}>{perfilResumen}</p>
         </div>
+      </div>
 
-        <div className={styles.modalActions}>
-          <Button onClick={onRestart}>Reiniciar conversación</Button>
-          <a
-            href="https://leadupn.page/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.linkButton}
-          >
-            Conocer LEAD UPN ↗
-          </a>
-        </div>
+      <div className={styles.modalActions}>
+        <Button onClick={onRestart}>Reiniciar conversación</Button>
+        <a
+          href="https://leadupn.page/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.linkButton}
+        >
+          Conocer LEAD UPN ↗
+        </a>
       </div>
     </GlowCard>
   );

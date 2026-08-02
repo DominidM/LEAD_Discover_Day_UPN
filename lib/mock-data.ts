@@ -1,7 +1,7 @@
 import type { Pilar, StepConfig } from "./constants";
 
 // ============================================================
-// LEAD-GUÍA · Preguntas de la conversación guiada
+// LEAD · Preguntas de la conversación guiada
 // Cada paso acumula un campo en el JSON de `UserData`.
 // ============================================================
 
@@ -83,60 +83,79 @@ export const steps: StepConfig[] = [
 
 export const pilares: Pilar[] = [
   {
-    id: "liderazgo",
-    nombre: "Liderazgo",
-    tagline: "Conduce con propósito",
+    id: "impacto_comunitario",
+    nombre: "Impacto Comunitario",
+    tagline: "El verdadero liderazgo se demuestra cuando ayudas a transformar vidas.",
     descripcion:
-      "Desarrollas la capacidad de inspirar, comunicar y mover a otros. Tu perfil brilla en equipos y proyectos donde tu voz guía.",
-    ruta: "Charla de Liderazgo: tu voz como guía",
+      "Convierte ideas en proyectos sociales que beneficien a personas, comunidades y causas con propósito antes de graduarte. Tu vocación de servicio y empatía te impulsan a dejar huella en tu entorno.",
+    ruta: "Charla de Impacto Comunitario: transforma vidas desde ya",
     acciones: [
-      "Asiste a la charla de Liderazgo del Discover Day",
-      "Escucha las historias de los expositores",
-      "Pregunta cómo empezar a liderar desde ahora",
-    ],
-    color: "#ffb819",
-  },
-  {
-    id: "innovacion",
-    nombre: "Innovación y tecnología",
-    tagline: "Construye lo que viene",
-    descripcion:
-      "Tu curiosidad por la tecnología te convierte en creador. Te mueves natural entre ideas, prototipos y soluciones del futuro.",
-    ruta: "Charla de Innovación y tecnología: crea lo que viene",
-    acciones: [
-      "Asiste a la charla de Innovación y tecnología",
-      "Descubre qué es innovar con ejemplos reales",
-      "Pregunta cómo explorar la tecnología y crear ideas",
-    ],
-    color: "#ffd04a",
-  },
-  {
-    id: "impacto",
-    nombre: "Impacto social",
-    tagline: "Transforma tu entorno",
-    descripcion:
-      "Te importa la gente y tu comunidad. Tu energía tiene el poder de generar cambios reales que van más allá del aula.",
-    ruta: "Charla de Impacto social: transforma tu entorno",
-    acciones: [
-      "Asiste a la charla de Impacto social",
-      "Conoce historias de cambio y voluntariado",
-      "Pregunta cómo generar impacto en tu comunidad",
+      "Asiste a la charla de Impacto Comunitario del Discover Day",
+      "Organiza campañas solidarias y proyectos sociales",
+      "Colabora con organizaciones y comunidades reales",
     ],
     color: "#e54e65",
+    imagen: "/assets/lead/impacto_comunitario.DqNJq7Zk.webp",
   },
   {
-    id: "desarrollo",
-    nombre: "Desarrollo profesional",
-    tagline: "Construye tu futuro",
+    id: "desarrollo_profesional",
+    nombre: "Desarrollo Profesional",
+    tagline: "Empieza a construir el profesional que quieres ser antes de graduarte.",
     descripcion:
-      "Tienes los pies en la tierra y la mirada en el futuro. Tu foco está en crecer, conectar y abrir puertas profesionales.",
-    ruta: "Charla de Desarrollo profesional: construye tu futuro",
+      "Desarrolla habilidades clave para el mercado laboral y construye un perfil profesional de alto impacto. Tu ambición y orientación a resultados te abrirán puertas.",
+    ruta: "Charla de Desarrollo Profesional: construye tu carrera",
     acciones: [
-      "Asiste a la charla de Desarrollo profesional",
-      "Escucha consejos de profesionales y egresados",
-      "Pregunta cómo dar tus primeros pasos hacia tu meta",
+      "Asiste a la charla de Desarrollo Profesional del Discover Day",
+      "Participa en talleres exclusivos de empleabilidad",
+      "Amplía tu red de contactos y networking",
     ],
     color: "#7e34a0",
+    imagen: "/assets/lead/desarrollo_profesional.COR-ZW5U.webp",
+  },
+  {
+    id: "desarrollo_capitulo",
+    nombre: "Desarrollo del Capítulo",
+    tagline: "Las mejores comunidades no nacen… se construyen.",
+    descripcion:
+      "Sé el corazón de la organización: fortalece la cultura, integra personas y crea un sentido de pertenencia. Eres extrovertido, integrador y haces que todos quieran participar.",
+    ruta: "Charla de Desarrollo del Capítulo: construye comunidad",
+    acciones: [
+      "Asiste a la charla de Desarrollo del Capítulo del Discover Day",
+      "Organiza actividades y eventos memorables",
+      "Integra nuevos miembros y fortalece el equipo",
+    ],
+    color: "#4ecdc4",
+    imagen: "/assets/lead/desarrollo_capitulo.BkXy_Vtg.webp",
+  },
+  {
+    id: "excelencia_femenina",
+    nombre: "Excelencia Femenina",
+    tagline: "Tu voz puede convertirse en la inspiración que otra estudiante necesita.",
+    descripcion:
+      "Crea espacios de crecimiento, inspiración y sororidad para impulsar el liderazgo femenino. Tu determinación y empatía abren camino a más mujeres.",
+    ruta: "Charla de Excelencia Femenina: inspira y lidera",
+    acciones: [
+      "Asiste a la charla de Excelencia Femenina del Discover Day",
+      "Crea iniciativas enfocadas en mujeres líderes",
+      "Construye redes de apoyo y sororidad",
+    ],
+    color: "#ffb819",
+    imagen: "/assets/lead/excelencia_femenina.NCZXg3Ri.webp",
+  },
+  {
+    id: "lead_academia",
+    nombre: "LEAD Academia",
+    tagline: "Enseñar también es una forma de liderar.",
+    descripcion:
+      "Comparte conocimientos con otros estudiantes, crea experiencias de aprendizaje y forma mentores mientras fortaleces tus propias habilidades. Tu pasión por enseñar transforma.",
+    ruta: "Charla de LEAD Academia: enseña y lidera",
+    acciones: [
+      "Asiste a la charla de LEAD Academia del Discover Day",
+      "Diseña talleres y capacitaciones para otros estudiantes",
+      "Conviértete en mentor de nuevos miembros",
+    ],
+    color: "#ffd04a",
+    imagen: "/assets/lead/lead_academia.DNA_qFqj.webp",
   },
 ];
 

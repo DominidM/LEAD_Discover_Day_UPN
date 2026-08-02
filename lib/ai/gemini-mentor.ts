@@ -15,7 +15,7 @@ export const buildPrompt = (userData: UserData): string => {
     .join("\n");
 
   return [
-    `Actúa como LEAD-GUÍA, el mentor IA de LEAD UPN.`,
+    `Actúa como Auki, el mentor IA de LEAD UPN.`,
     `Un estudiante (cachimbo o de secundaria) acaba de responder una conversación guiada.`,
     `Usa EXCLUSIVAMENTE estos datos estructurados del estudiante:`,
     JSON.stringify(userData, null, 2),

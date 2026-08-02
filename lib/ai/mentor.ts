@@ -1,5 +1,5 @@
 // ============================================================
-// LEAD-GUÍA · Contrato del proveedor de IA (fase 2: Gemini)
+// Auki · Contrato del proveedor de IA (fase 2: Gemini)
 // La UI solo conoce este contrato; el proveedor es intercambiable.
 // ============================================================
 
@@ -23,6 +23,7 @@ export interface RutaSugerida {
   acciones: string[];
   color: string;
   perfil: string;
+  imagen: string;
 }
 
 export const emptyUserData = (): UserData => ({
