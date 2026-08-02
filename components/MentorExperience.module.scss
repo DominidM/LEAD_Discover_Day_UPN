@@ -519,12 +519,88 @@
   white-space: nowrap;
 }
 
-// Footer
+// Footer: franja tipográfica animada (marquee de identidad)
 .footer {
-  text-align: center;
-  padding: 18px 0 22px;
-  font-size: 0.82rem;
-  color: var(--muted);
+  position: relative;
+  margin: 0 calc(clamp(16px, 4vw, 40px) * -1);
+  padding: 8px clamp(16px, 4vw, 40px) 0;
+  overflow: hidden;
+}
+
+.marquee {
+  overflow: hidden;
+  width: 100%;
+}
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 26s linear infinite;
+}
+
+.marqueeGroup {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.marqueeItem {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px clamp(16px, 3vw, 30px);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 6.5vw, 4.2rem);
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  white-space: nowrap;
+  text-transform: uppercase;
+  opacity: 0.95;
+  transition: opacity var(--speed-med) var(--ease-out);
+}
+
+.marqueeItem:hover {
+  opacity: 1;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.tone-wine {
+  color: var(--lead-strong);
+  text-shadow: 0 0 24px rgba(224, 74, 107, 0.35);
+}
+
+.tone-violet {
+  color: var(--purple);
+  text-shadow: 0 0 24px rgba(126, 52, 160, 0.35);
+}
+
+.tone-magenta {
+  color: var(--magenta);
+  text-shadow: 0 0 24px rgba(165, 36, 117, 0.35);
+}
+
+.tone-white {
+  color: var(--white);
+  text-shadow: 0 0 24px rgba(255, 255, 255, 0.18);
+}
+
+.tone-gold {
+  color: var(--gold);
+  text-shadow: 0 0 24px rgba(255, 184, 25, 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marqueeTrack {
+    animation: none;
+  }
 }
 
 @media (max-width: 640px) {

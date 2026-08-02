@@ -375,9 +375,6 @@ export default function MentorExperience() {
                       className={`${styles.marqueeItem} ${styles[`tone-${word.tone}`]}`}
                     >
                       {word.text}
-                      <span className={styles.marqueeSep} aria-hidden="true">
-                        ✦
-                      </span>
                     </span>
                   ),
                 )}
