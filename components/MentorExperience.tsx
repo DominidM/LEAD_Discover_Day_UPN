@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import GuiaMascot from "./ui/GuiaMascot";
@@ -14,7 +14,7 @@ import WelcomeScreen from "./WelcomeScreen";
 import { steps } from "@/lib/mock-data";
 import { emptyUserData, type RutaSugerida, type UserData } from "@/lib/ai/mentor";
 import { MockMentor } from "@/lib/ai/mock-mentor";
-import { BRAND_NAME, ORG_NAME } from "@/lib/constants";
+import { ORG_NAME } from "@/lib/constants";
 import styles from "./MentorExperience.module.scss";
 
 type Entry =
@@ -27,6 +27,14 @@ const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, 
 
 const formatAnswer = (value: string | string[]): string =>
   Array.isArray(value) ? value.join(", ") : value;
+
+const FOOTER_WORDS: { text: string; tone: "wine" | "violet" | "magenta" | "white" | "gold" }[] = [
+  { text: "LEARN", tone: "wine" },
+  { text: "EXPLORE", tone: "violet" },
+  { text: "ASPIRE", tone: "magenta" },
+  { text: "DISCOVER", tone: "white" },
+  { text: "UPN", tone: "gold" },
+];
 
 type Theme = "dark" | "light";
 
@@ -125,7 +133,7 @@ export default function MentorExperience() {
     await pushMentor(`¡Hola! 👋 Soy Guía, tu mentor IA de ${ORG_NAME}.`);
     await wait(320);
     await pushMentor(
-      "Voy a hacerte unas preguntas para conocerte y descubrir juntos tu rumbo dentro del ecosistema LEAD. Vamos paso a paso.",
+      "Voy a hacerte unas preguntas para conocerte y descubrir cuál de los pilares de LEAD es para ti. Vamos paso a paso.",
     );
     await wait(200);
     setSpeaking(false);
@@ -166,7 +174,7 @@ export default function MentorExperience() {
     setSpeaking(true);
     await pushMentor(`¡Listo, ${ruta.nombre}!`);
     await pushMentor(
-      "Este es tu perfil y la ruta que te recomiendo dentro del ecosistema LEAD. ¿Listo para dar el primer paso?",
+      "Este es tu perfil y el pilar que conecta contigo. ¿Listo para conocerlo en la charla del Discover Day?",
     );
     setSpeaking(false);
 
@@ -356,7 +364,27 @@ export default function MentorExperience() {
       )}
 
       <footer className={styles.footer}>
-        {BRAND_NAME} · Mentor IA de {ORG_NAME} — Descubre tu rumbo.
+        <div className={styles.marquee} aria-hidden="true">
+          <div className={styles.marqueeTrack}>
+            {[0, 1].map((half) => (
+              <div className={styles.marqueeGroup} key={half}>
+                {[...FOOTER_WORDS, ...FOOTER_WORDS, ...FOOTER_WORDS, ...FOOTER_WORDS].map(
+                  (word, i) => (
+                    <span
+                      key={`${half}-${i}`}
+                      className={`${styles.marqueeItem} ${styles[`tone-${word.tone}`]}`}
+                    >
+                      {word.text}
+                      <span className={styles.marqueeSep} aria-hidden="true">
+                        ✦
+                      </span>
+                    </span>
+                  ),
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       </footer>
 
       <AnimatePresence>
@@ -458,8 +486,8 @@ function ResultCard({
   const { pilar, tagline, descripcion, ruta, acciones, perfil, color, nombre } = result;
 
   return (
-    <GlowCard glow={color}>
-      <div className={styles.modalBanner} style={{ "--banner": color } as CSSProperties}>
+    <GlowCard glow={color} className={styles.modalCard}>
+      <div className={styles.modalBanner}>
               <GuiaMascot state="greeting" size={56} mode="avatar" className={styles.modalBannerOrb} />
         <div className={styles.modalBannerText}>
           <span className={styles.modalBannerKicker}>TU RUTA SUGERIDA</span>
@@ -476,7 +504,7 @@ function ResultCard({
         </button>
       </div>
 
-      <div className={styles.modalBody} style={{ "--acc": color } as CSSProperties}>
+      <div className={styles.modalBody}>
         <div className={styles.modalGreet}>
           <p>{perfil}</p>
           <p className={styles.modalGreetDesc}>{descripcion}</p>

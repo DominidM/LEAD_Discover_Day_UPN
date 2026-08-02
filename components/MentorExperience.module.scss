@@ -9,10 +9,17 @@
 
 // Header
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 0 8px;
+  gap: 16px;
+  margin: 0 calc(clamp(16px, 4vw, 40px) * -1);
+  padding: 14px clamp(16px, 4vw, 40px) 10px;
+  background: transparent;
+  border-bottom: none;
 }
 
 .leadLogo {
@@ -240,8 +247,40 @@
 .modalWrap {
   width: 100%;
   max-width: 620px;
+}
+
+// Card del modal: noche sólida, sin degradado (overrides GlowCard).
+// El scroll vive aquí dentro para respetar los bordes redondeados.
+.modalCard.modalCard {
   max-height: 86dvh;
   overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--night);
+  border-color: var(--border);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+.modalCard.modalCard::-webkit-scrollbar {
+  width: 4px;
+}
+
+.modalCard.modalCard::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modalCard.modalCard::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  border: none;
+}
+
+.modalCard.modalCard::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.modalCard.modalCard::before {
+  background: none;
 }
 
 .modalClose {
@@ -275,11 +314,7 @@
   align-items: center;
   gap: 16px;
   padding: 30px 34px 26px;
-  background: linear-gradient(
-    140deg,
-    color-mix(in srgb, var(--banner) 32%, transparent),
-    rgba(255, 255, 255, 0.02) 72%
-  );
+  background: var(--surface-strong);
   border-bottom: 1px solid var(--border);
 }
 
@@ -300,11 +335,12 @@
   font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--muted-strong);
+  color: var(--lead-strong);
 }
 
 .modalBannerTitle {
   font-size: clamp(1.7rem, 4vw, 2.4rem);
+  color: var(--white);
 }
 
 .modalBannerTagline {
@@ -332,7 +368,7 @@
   border-radius: var(--radius);
   background: var(--surface);
   border: 1px solid var(--border);
-  border-left: 3px solid var(--acc);
+  border-left: 3px solid var(--lead);
 }
 
 .modalGreet p {
@@ -368,8 +404,8 @@
   font-weight: 600;
   font-size: 1.02rem;
   color: var(--white);
-  background: color-mix(in srgb, var(--acc) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--acc) 32%, transparent);
+  background: color-mix(in srgb, var(--lead) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--lead) 32%, transparent);
 }
 
 .modalPasos ol {
@@ -399,8 +435,8 @@
   font-weight: 700;
   font-size: 0.88rem;
   color: var(--ink);
-  background: var(--acc);
-  box-shadow: 0 0 14px color-mix(in srgb, var(--acc) 40%, transparent);
+  background: var(--lead);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--lead) 40%, transparent);
   margin-top: 2px;
 }
 

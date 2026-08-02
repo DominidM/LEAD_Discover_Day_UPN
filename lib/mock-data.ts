@@ -88,11 +88,11 @@ export const pilares: Pilar[] = [
     tagline: "Conduce con propósito",
     descripcion:
       "Desarrollas la capacidad de inspirar, comunicar y mover a otros. Tu perfil brilla en equipos y proyectos donde tu voz guía.",
-    ruta: "Comunidad de líderes estudiantiles y mentorías",
+    ruta: "Charla de Liderazgo: tu voz como guía",
     acciones: [
-      "Únete a un comité o grupo estudiantil de LEAD",
-      "Participa en los talleres de liderazgo y comunicación",
-      "Propón y lidera un proyecto para tu facultad",
+      "Asiste a la charla de Liderazgo del Discover Day",
+      "Escucha las historias de los expositores",
+      "Pregunta cómo empezar a liderar desde ahora",
     ],
     color: "#ffb819",
   },
@@ -102,11 +102,11 @@ export const pilares: Pilar[] = [
     tagline: "Construye lo que viene",
     descripcion:
       "Tu curiosidad por la tecnología te convierte en creador. Te mueves natural entre ideas, prototipos y soluciones del futuro.",
-    ruta: "Hackatones, laboratorios STEM y proyectos tech",
+    ruta: "Charla de Innovación y tecnología: crea lo que viene",
     acciones: [
-      "Inscríbete en el próximo hackatón de LEAD",
-      "Únete a un equipo de proyectos STEM",
-      "Aprende nuevas herramientas en los talleres tech",
+      "Asiste a la charla de Innovación y tecnología",
+      "Descubre qué es innovar con ejemplos reales",
+      "Pregunta cómo explorar la tecnología y crear ideas",
     ],
     color: "#ffd04a",
   },
@@ -116,11 +116,11 @@ export const pilares: Pilar[] = [
     tagline: "Transforma tu entorno",
     descripcion:
       "Te importa la gente y tu comunidad. Tu energía tiene el poder de generar cambios reales que van más allá del aula.",
-    ruta: "Voluntariado y proyectos de impacto comunitario",
+    ruta: "Charla de Impacto social: transforma tu entorno",
     acciones: [
-      "Suma tu energía a las jornadas de voluntariado",
-      "Diseña una iniciativa para tu comunidad",
-      "Sé embajador del cambio en tu campus",
+      "Asiste a la charla de Impacto social",
+      "Conoce historias de cambio y voluntariado",
+      "Pregunta cómo generar impacto en tu comunidad",
     ],
     color: "#e54e65",
   },
@@ -130,11 +130,11 @@ export const pilares: Pilar[] = [
     tagline: "Construye tu futuro",
     descripcion:
       "Tienes los pies en la tierra y la mirada en el futuro. Tu foco está en crecer, conectar y abrir puertas profesionales.",
-    ruta: "Empleabilidad, red de contactos y marca personal",
+    ruta: "Charla de Desarrollo profesional: construye tu futuro",
     acciones: [
-      "Arma tu perfil profesional con el apoyo de LEAD",
-      "Conecta con mentores y egresados",
-      "Participa en ferias de empleabilidad y talleres de CV",
+      "Asiste a la charla de Desarrollo profesional",
+      "Escucha consejos de profesionales y egresados",
+      "Pregunta cómo dar tus primeros pasos hacia tu meta",
     ],
     color: "#7e34a0",
   },
