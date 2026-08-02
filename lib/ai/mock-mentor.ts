@@ -222,6 +222,7 @@ export class MockMentor implements MentorProvider {
       color: pilar.color,
       perfil,
       imagen: pilar.imagen,
+      closing: `¡Listo, ${nombre}! Tu perfil conecta con el pilar de ${pilar.nombre}. Nos vemos en la charla del Discover Day.`,
     };
   }
 }

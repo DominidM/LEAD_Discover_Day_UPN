@@ -13,7 +13,7 @@ import ThemeToggle from "./ui/ThemeToggle";
 import WelcomeScreen from "./WelcomeScreen";
 import { steps } from "@/lib/mock-data";
 import { emptyUserData, type RutaSugerida, type UserData } from "@/lib/ai/mentor";
-import { MockMentor } from "@/lib/ai/mock-mentor";
+import { GeminiMentor } from "@/lib/ai/gemini-mentor";
 import { ORG_NAME } from "@/lib/constants";
 import styles from "./MentorExperience.module.scss";
 
@@ -50,7 +50,6 @@ export default function MentorExperience() {
   const [thinking, setThinking] = useState(false);
   const [result, setResult] = useState<RutaSugerida | null>(null);
   const [resultOpen, setResultOpen] = useState(false);
-  const [userData, setUserData] = useState<UserData>(emptyUserData());
   const [speaking, setSpeaking] = useState(false);
   const [welcome, setWelcome] = useState(true);
   const [navHidden, setNavHidden] = useState(false);
@@ -115,7 +114,6 @@ export default function MentorExperience() {
     setThinking(false);
     setResult(null);
     setResultOpen(false);
-    setUserData(emptyUserData());
   };
 
   const restart = () => {
@@ -146,6 +144,8 @@ export default function MentorExperience() {
 
     const data: UserData = emptyUserData();
 
+    const mentor = new GeminiMentor();
+
     for (let i = 0; i < steps.length; i++) {
       const step = steps[i];
       const question =
@@ -157,7 +157,6 @@ export default function MentorExperience() {
       setSpeaking(false);
       const answer = await waitForAnswer(i);
       (data as unknown as Record<string, string | string[]>)[step.field] = answer;
-      setUserData({ ...data });
       pushUser(formatAnswer(answer));
       if (step.id === "nombre" && typeof answer === "string" && answer.trim()) {
         setSpeaking(true);
@@ -168,19 +167,23 @@ export default function MentorExperience() {
     }
 
     setSpeaking(true);
+    const aiReply = await mentor.getReply(data, data.motivacion);
+    if (aiReply) {
+      await pushMentor(aiReply);
+      await wait(140);
+    }
     await pushMentor("¡Gracias! Déjame analizar todo lo que me contaste…");
     setSpeaking(false);
 
     setThinking(true);
-    await wait(1600);
-    const ruta = await new MockMentor().getRecommendation(data);
+    const ruta = await mentor.getRecommendation(data);
     setThinking(false);
     setResult(ruta);
 
     setSpeaking(true);
-    await pushMentor(`¡Listo, ${ruta.nombre}!`);
     await pushMentor(
-      "Este es tu perfil y el pilar que conecta contigo. ¿Listo para conocerlo en la charla del Discover Day?",
+      ruta.closing ||
+        `¡Listo, ${ruta.nombre}! Tu perfil conecta con el pilar de ${ruta.pilar}.`,
     );
     setSpeaking(false);
 
@@ -463,7 +466,6 @@ export default function MentorExperience() {
             >
               <ResultCard
                 result={result}
-                userData={userData}
                 onClose={() => setResultOpen(false)}
                 onRestart={restart}
               />
@@ -509,23 +511,15 @@ function TextField({ onSubmit }: { onSubmit: (text: string) => void }) {
 
 function ResultCard({
   result,
-  userData,
   onClose,
   onRestart,
 }: {
   result: RutaSugerida;
-  userData: UserData;
   onClose: () => void;
   onRestart: () => void;
 }) {
-  const { pilar, tagline, descripcion, ruta, acciones, perfil, color, nombre, imagen } = result;
-
-  const cursos = userData.cursos_preferidos.slice(0, 2).join(" y ") || "tus cursos";
-  const hobbies = userData.hobbies.slice(0, 2).join(" y ") || "tus hobbies";
-  const habilidad = userData.habilidad_a_desarrollar || "crecer";
-  const motivacion = userData.motivacion || "lograrlo";
-
-  const perfilResumen = `${nombre}, tus elecciones reflejan un perfil claro. Te llama la atención ${cursos}, disfrutas ${hobbies} y quieres desarrollar tu habilidad en ${habilidad}. Lo que te mueve es "${motivacion}".`;
+  const { pilar, tagline, descripcion, ruta, acciones, perfil, color, imagen, closing } =
+    result;
 
   return (
     <GlowCard glow={color} className={styles.modalCard}>
@@ -585,8 +579,8 @@ function ResultCard({
         </div>
 
         <div className={styles.modalRecap}>
-          <span className={styles.modalLabel}>Tu perfil</span>
-          <p className={styles.modalRecapText}>{perfilResumen}</p>
+          <span className={styles.modalLabel}>Mensaje de Auki</span>
+          <p className={styles.modalRecapText}>{closing}</p>
         </div>
       </div>
 

@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node scripts/dev-all.js",
+    "dev:ui": "next dev",
+    "dev:api": "npx wrangler pages dev out --port 8788",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",

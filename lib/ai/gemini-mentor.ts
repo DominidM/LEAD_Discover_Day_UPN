@@ -1,49 +1,49 @@
 import type { MentorProvider, RutaSugerida, UserData } from "./mentor";
-import { pilares } from "../mock-data";
+import { MockMentor } from "./mock-mentor";
 
 // ============================================================
-// GeminiMentor · FASE 2 (no activo)
-// Mismo contrato que MockMentor. Construye el prompt contextual
-// con los datos del usuario + pilares + contexto y lo envía a
-// la API de Gemini. Para activarlo, reemplaza el proveedor en
-// components/MentorExperience.tsx y añade tu API key.
+// GeminiMentor · Proveedor real (fase 2)
+// Llama a la Cloudflare Pages Function /api/mentor que acerciona
+// a Gemini con la API key en el servidor. Si la API no está
+// disponible (p.ej. `next dev` sin la función), cae al MockMentor
+// para que la experiencia nunca se rompa.
 // ============================================================
 
-export const buildPrompt = (userData: UserData): string => {
-  const contexto = pilares
-    .map((p) => `- ${p.nombre}: ${p.tagline}. Ruta: ${p.ruta}`)
-    .join("\n");
-
-  return [
-    `Actúa como Auki, el mentor IA de LEAD UPN.`,
-    `Un estudiante (cachimbo o de secundaria) acaba de responder una conversación guiada.`,
-    `Usa EXCLUSIVAMENTE estos datos estructurados del estudiante:`,
-    JSON.stringify(userData, null, 2),
-    ``,
-    `Pilares del ecosistema LEAD disponibles:`,
-    contexto,
-    ``,
-    `Con base en los datos, genera una recomendación personalizada en JSON con esta forma:`,
-    `{ "pilar": string, "tagline": string, "descripcion": string, "ruta": string, "acciones": string[], "perfil": string }`,
-    `El campo "perfil" debe ser un párrafo motivador que mencione el nombre del estudiante y conecte sus respuestas.`,
-  ].join("\n");
-};
+const API_URL = "/api/mentor";
 
 export class GeminiMentor implements MentorProvider {
-  async getRecommendation(userData: UserData): Promise<RutaSugerida> {
-    void userData;
-    // Fase 2: usar buildPrompt(userData) como contenido del prompt y
-    // enviarlo a la API de Gemini.
-    //
-    // Ejemplo con @google/genai:
-    // const response = await client.models.generateContent({
-    //   model: "gemini-2.0-flash",
-    //   contents: buildPrompt(userData),
-    // });
-    // return parseJson(response.text);
+  private readonly fallback = new MockMentor();
 
-    throw new Error(
-      "GeminiMentor no está configurado aún. Conecta tu API en la fase 2.",
-    );
+  async getRecommendation(userData: UserData): Promise<RutaSugerida> {
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "recommend", userData }),
+      });
+      if (!res.ok) throw new Error(`La API respondió ${res.status}`);
+      const data = (await res.json()) as { ruta?: RutaSugerida };
+      if (!data?.ruta) throw new Error("La API no devolvió una ruta");
+      return data.ruta;
+    } catch (err) {
+      console.warn("[Auki] Gemini no disponible, usando modo local.", err);
+      return this.fallback.getRecommendation(userData);
+    }
+  }
+
+  async getReply(userData: UserData, message: string): Promise<string | null> {
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "reply", userData, message }),
+      });
+      if (!res.ok) throw new Error(`La API respondió ${res.status}`);
+      const data = (await res.json()) as { reply?: string };
+      return data?.reply?.trim() ? data.reply.trim() : null;
+    } catch (err) {
+      console.warn("[Auki] Respuesta IA no disponible.", err);
+      return null;
+    }
   }
 }
