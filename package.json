@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "deploy": "npm run build && wrangler pages deploy out",
+    "preview": "npm run build && wrangler pages dev out"
   },
   "dependencies": {
     "framer-motion": "^12.9.2",
@@ -22,6 +24,7 @@
     "eslint": "^9.30.0",
     "eslint-config-next": "^15.4.0",
     "sass": "^1.89.0",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "wrangler": "^4.118.0"
   }
 }
