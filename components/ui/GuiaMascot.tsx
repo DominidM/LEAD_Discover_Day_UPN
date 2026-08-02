@@ -14,10 +14,10 @@ interface GuiaMascotProps {
 }
 
 const IMAGES: Record<State, string> = {
-  idle: "/assets/reposo.png",
-  speaking: "/assets/hablando.png",
-  thinking: "/assets/pensando.png",
-  greeting: "/assets/saludo.png",
+  idle: "https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785686641/reposo_mzz6xb.png",
+  speaking: "https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785686619/hablando_bc1kz8.png",
+  thinking: "https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785686620/pensando_iz9zyw.png",
+  greeting: "https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785686642/saludo_gsc1n9.png",
 };
 
 export default function GuiaMascot({
