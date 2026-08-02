@@ -487,6 +487,13 @@ function ResultCard({
 }) {
   const { pilar, tagline, descripcion, ruta, acciones, perfil, color, nombre, imagen } = result;
 
+  const cursos = userData.cursos_preferidos.slice(0, 2).join(" y ") || "tus cursos";
+  const hobbies = userData.hobbies.slice(0, 2).join(" y ") || "tus hobbies";
+  const habilidad = userData.habilidad_a_desarrollar || "crecer";
+  const motivacion = userData.motivacion || "lograrlo";
+
+  const perfilResumen = `${nombre}, tus elecciones reflejan un perfil claro. Te llama la atención ${cursos}, disfrutas ${hobbies} y quieres desarrollar tu habilidad en ${habilidad}. Lo que te mueve es "${motivacion}".`;
+
   return (
     <GlowCard glow={color} className={styles.modalCard}>
       <button
@@ -505,7 +512,7 @@ function ResultCard({
             alt={`Pilar ${pilar}`}
             fill
             unoptimized
-            sizes="(max-width: 640px) 100vw, 620px"
+            sizes="(max-width: 640px) 100vw, 640px"
             className={styles.modalBannerImg}
           />
           <div className={styles.modalBannerGradient} />
@@ -546,30 +553,20 @@ function ResultCard({
 
         <div className={styles.modalRecap}>
           <span className={styles.modalLabel}>Tu perfil</span>
-          <div className={styles.modalChips}>
-            <Chip label={nombre} accent={color} />
-            {userData.cursos_preferidos.slice(0, 2).map((c) => (
-              <Chip key={c} label={c} accent={color} />
-            ))}
-            <Chip label={userData.habilidad_a_desarrollar || "Habilidad en desarrollo"} accent={color} />
-            {userData.hobbies.slice(0, 2).map((h) => (
-              <Chip key={h} label={h} accent={color} />
-            ))}
-            <Chip label={`"${userData.motivacion}"`} accent={color} />
-          </div>
+          <p className={styles.modalRecapText}>{perfilResumen}</p>
         </div>
+      </div>
 
-        <div className={styles.modalActions}>
-          <Button onClick={onRestart}>Reiniciar conversación</Button>
-          <a
-            href="https://leadupn.page/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.linkButton}
-          >
-            Conocer LEAD UPN ↗
-          </a>
-        </div>
+      <div className={styles.modalActions}>
+        <Button onClick={onRestart}>Reiniciar conversación</Button>
+        <a
+          href="https://leadupn.page/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.linkButton}
+        >
+          Conocer LEAD UPN ↗
+        </a>
       </div>
     </GlowCard>
   );

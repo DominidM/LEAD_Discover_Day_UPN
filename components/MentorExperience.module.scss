@@ -252,73 +252,67 @@
   max-width: 640px;
 }
 
-// Card del modal: noche sólida, sin degradado (overrides GlowCard).
-// El scroll vive aquí dentro para respetar los bordes redondeados.
+// Card del modal: estructura flex con scroll solo en el cuerpo
 .modalCard.modalCard {
-  max-height: 86dvh;
-  overflow-y: auto;
-  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 90dvh;
+  overflow: hidden;
   background: var(--night);
   border-color: var(--border);
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
-}
-
-.modalCard.modalCard::-webkit-scrollbar {
-  width: 4px;
-}
-
-.modalCard.modalCard::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.modalCard.modalCard::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-  border: none;
-}
-
-.modalCard.modalCard::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
 }
 
 .modalCard.modalCard::before {
   background: none;
 }
 
-.modalClose {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 3;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
-  color: var(--white);
-  font-size: 0.95rem;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  transition:
-    border-color var(--speed-fast) var(--ease-out),
-    background var(--speed-fast) var(--ease-out);
-}
-
-.modalClose:hover {
-  border-color: rgba(255, 184, 25, 0.6);
-  background: rgba(255, 184, 25, 0.18);
-}
-
-// Banner del modal con imagen de fondo
+// Banner: fijo arriba, no scrollea
 .modalBanner {
+  flex-shrink: 0;
+}
+
+// Scroll personalizado en el cuerpo del modal
+.modalBody {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  border-radius: var(--radius) var(--radius) 0 0;
+  gap: 28px;
+  padding: 0 30px 34px;
+  z-index: 1;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.modalBody::-webkit-scrollbar {
+  width: 4px;
+}
+
+.modalBody::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modalBody::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  border: none;
+}
+
+.modalBody::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+// Acciones: fijas abajo, no scrollean
+.modalActions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 0 30px 28px;
+  z-index: 1;
 }
 
 .modalBannerImage {
@@ -384,15 +378,7 @@
   margin-top: 4px;
 }
 
-// Cuerpo del modal
-.modalBody {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  padding: 0 30px 34px;
-  z-index: 1;
-}
+// Cuerpo del modal — contenido (heredado de .modalBody arriba)
 
 .modalGreet {
   display: flex;
@@ -481,18 +467,10 @@
   gap: 10px;
 }
 
-.modalChips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.modalActions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 4px;
+.modalRecapText {
+  font-size: 0.96rem;
+  color: var(--muted-strong);
+  line-height: 1.65;
 }
 
 .linkButton {
