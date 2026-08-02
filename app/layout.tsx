@@ -35,6 +35,9 @@ export const metadata: Metadata = {
   title: "Auki · Mentor IA de LEAD UPN",
   description:
     "Auki es el mentor IA de LEAD UPN. Responde unas preguntas y descubre tu pilar y tu ruta dentro del ecosistema LEAD.",
+  icons: {
+    icon: "/favicon.png",
+  },
   keywords: [
     "LEAD UPN",
     "mentor IA",
