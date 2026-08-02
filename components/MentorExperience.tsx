@@ -53,6 +53,7 @@ export default function MentorExperience() {
   const [userData, setUserData] = useState<UserData>(emptyUserData());
   const [speaking, setSpeaking] = useState(false);
   const [welcome, setWelcome] = useState(true);
+  const [navHidden, setNavHidden] = useState(false);
 
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof document !== "undefined") {
@@ -192,6 +193,23 @@ export default function MentorExperience() {
   }, [activeStep]);
 
   useEffect(() => {
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y <= 0) {
+        setNavHidden(false);
+      } else if (y > lastY) {
+        setNavHidden(false);
+      } else {
+        setNavHidden(true);
+      }
+      lastY = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
     const el = scrollRef.current;
     if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [entries, thinking, result]);
@@ -278,7 +296,7 @@ export default function MentorExperience() {
     <div className={styles.experience}>
       <Starfield density={90} />
 
-      <header className={styles.header}>
+      <header className={`${styles.header} ${navHidden ? styles.navHidden : ""}`}>
         <a
           href="https://leadupn.page/"
           target="_blank"
@@ -306,6 +324,7 @@ export default function MentorExperience() {
             <GuiaMascot
               state={thinking ? "thinking" : speaking ? "speaking" : "idle"}
               size={170}
+              className={styles.orbMascot}
             />
             <div className={styles.orbLabel}>Auki</div>
           </div>
