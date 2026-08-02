@@ -32,57 +32,75 @@ export default function WelcomeScreen({ onStart }: WelcomeScreenProps) {
         initial="hidden"
         animate="show"
       >
-        <motion.div variants={item} className={styles.top}>
-          <a
-            href="https://leadupn.page/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.brand}
-            title={ORG_NAME}
-          >
-            <Image
-              src="/assets/logo-lead.webp"
-              alt={ORG_NAME}
-              width={56}
-              height={56}
-              unoptimized
-              className={styles.brandImg}
-            />
-            <span className={styles.brandText}>
-              <span className={styles.brandName}>{ORG_NAME}</span>
-              <span className={styles.brandTag}>DISCOVER DAY</span>
-            </span>
-          </a>
-          <div className={styles.badge}>
-            <span className={styles.badgeDot} />
-            EXPERIENCIA INTERACTIVA
+        <motion.div variants={item} className={styles.content}>
+          <div className={styles.top}>
+            <a
+              href="https://leadupn.page/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.brand}
+              title={ORG_NAME}
+            >
+              <Image
+                src="/assets/logo-lead.webp"
+                alt={ORG_NAME}
+                width={56}
+                height={56}
+                unoptimized
+                className={styles.brandImg}
+              />
+              <span className={styles.brandText}>
+                <span className={styles.brandName}>{ORG_NAME}</span>
+                <span className={styles.brandTag}>DISCOVER DAY</span>
+              </span>
+            </a>
+            <div className={styles.badge}>
+              <span className={styles.badgeDot} />
+              EXPERIENCIA INTERACTIVA
+            </div>
+          </div>
+
+          <h1 className={styles.title}>
+            Descubre qué tipo de <em>líder</em> puedes ser
+          </h1>
+
+          <p className={styles.desc}>
+            Conversa con nuestra IA y descubre cuál de los pilares de {ORG_NAME}{" "}
+            es para ti.
+          </p>
+
+          <div className={styles.meta}>
+            <span>Toma menos de 2 minutos</span>
+            <span className={styles.metaSep} />
+            <span>Encuentra tu pilar</span>
+          </div>
+
+          <div className={styles.actions}>
+            <Button onClick={onStart} size="lg">
+              Comenzar ahora
+            </Button>
+            <p className={styles.footnote}>Una charla, cuatro pilares y un nuevo comienzo.</p>
           </div>
         </motion.div>
 
-        <motion.div variants={item} className={styles.orb}>
-          <GuiaMascot state="greeting" size={180} />
-        </motion.div>
-
-        <motion.h1 variants={item} className={styles.title}>
-          Descubre qué tipo de <em>líder</em> puedes ser
-        </motion.h1>
-
-        <motion.p variants={item} className={styles.desc}>
-          Conversa con nuestra IA y descubre las experiencias de {ORG_NAME}{" "}
-          ideales para ti.
-        </motion.p>
-
-        <motion.div variants={item} className={styles.meta}>
-          <span>Toma menos de 2 minutos</span>
-          <span className={styles.metaSep} />
-          <span>Encuentra tu próximo reto</span>
-        </motion.div>
-
-        <motion.div variants={item} className={styles.actions}>
-          <Button onClick={onStart} size="lg">
-            Comenzar ahora
-          </Button>
-          <p className={styles.footnote}>Tu próximo gran equipo puede empezar aquí.</p>
+        <motion.div variants={item} className={styles.panel}>
+          <div className={styles.halo} aria-hidden="true" />
+          <div className={styles.rings} aria-hidden="true">
+            <div className={`${styles.ring} ${styles.ringOuter}`} />
+            <div className={`${styles.ring} ${styles.ringInner}`} />
+          </div>
+          <div className={styles.orb}>
+            <GuiaMascot state="greeting" size={300} />
+          </div>
+          <div className={styles.sparkles} aria-hidden="true">
+            <span className={styles.sparkle} />
+            <span className={styles.sparkle} />
+            <span className={styles.sparkle} />
+            <span className={styles.sparkle} />
+            <span className={styles.sparkle} />
+            <span className={styles.sparkle} />
+            <span className={styles.sparkle} />
+          </div>
         </motion.div>
       </motion.div>
     </div>
