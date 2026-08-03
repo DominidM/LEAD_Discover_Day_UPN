@@ -20,34 +20,96 @@ const SENDER_NAME = "LEAD UPN · Auki";
 const SENDER_EMAIL = "jeremyar792@gmail.com";
 
 function buildHtml(r: RutaSugerida): string {
-  const actionsHtml = r.acciones
-    .map(
-      (a) =>
-        `<li style="margin:0 0 10px;padding:10px 14px;background:#f4f7fb;border-radius:8px;font-size:15px;line-height:1.5;color:#334155;">${a}</li>`,
-    )
-    .join("");
-  return `
-  <div style="font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto;padding:30px 16px;background:#f1f5f9;">
-    <div style="background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;">
-      <div style="background:${r.color};padding:34px 24px;text-align:center;color:#ffffff;">
-        <span style="font-size:12px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;">LEAD UPN · Descubre tu pilar</span>
-        <h1 style="margin:12px 0 0;font-size:26px;font-weight:800;letter-spacing:-0.02em;">${r.pilar}</h1>
-        <p style="margin:6px 0 0;font-size:15px;opacity:0.95;">${r.tagline}</p>
-      </div>
-      <div style="padding:26px 24px;">
-        <p style="margin:0 0 18px;font-size:15px;line-height:1.6;color:#475569;"><strong>${r.nombre}</strong>, ${r.perfil}</p>
-        <p style="margin:0 0 18px;font-size:15px;line-height:1.6;color:#475569;">${r.descripcion}</p>
-        <div style="margin-bottom:22px;padding:16px;background:#f8fafc;border-left:4px solid ${r.color};border-radius:0 8px 8px 0;">
-          <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#94a3b8;">Ruta recomendada</span>
-          <p style="margin:6px 0 0;font-size:18px;font-weight:700;color:#0f172a;">${r.ruta}</p>
-        </div>
-        <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#94a3b8;">Primeros pasos</span>
-        <ol style="margin:10px 0 0;padding:0;list-style:none;">${actionsHtml}</ol>
-        <p style="margin:22px 0 0;font-size:15px;line-height:1.6;color:#475569;">${r.closing ?? ""}</p>
-      </div>
-      <div style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:18px 24px;text-align:center;font-size:12px;color:#94a3b8;">Ecosistema LEAD UPN · Nos vemos en el Discover Day</div>
+  const accionesText = r.acciones.join("\n");
+  return `\
+<div style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif, Arial; font-size: 15px; line-height: 1.6; color: #1a1a2e;">
+  <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.12);">
+
+    <div style="background: linear-gradient(135deg, #010723 0%, #1a0b2e 100%); padding: 32px 24px; text-align: center;">
+      <img src="https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785680406/logo-lead_p1ymto.webp" alt="LEAD UPN" style="height: 58px; margin-bottom: 12px;" />
+      <h1 style="margin: 0; color: #ffd04a; font-size: 22px; font-weight: 700; letter-spacing: 0.04em;">
+        ¡Tu ruta LEAD UPN!
+      </h1>
+      <p style="margin: 8px 0 0; color: #ffffff; opacity: 0.85; font-size: 14px;">
+        Descubrimos tu pilar ideal con Auki, tu mentor IA.
+      </p>
     </div>
-  </div>`;
+
+    <div style="position: relative; text-align: center; background: #f8f9fc;">
+      <img src="${r.imagen}" alt="Pilar ${r.pilar}" style="max-width: 480px; width: 45%; height: auto; display: block; margin: 0 auto;" />
+    </div>
+
+    <div style="padding: 28px 24px;">
+      <p style="margin: 0 0 16px; font-size: 18px; color: #1a1a2e;">
+        Hola, <strong>${r.nombre}</strong>.
+      </p>
+      <p style="margin: 0; color: #4a4a68;">
+        ${r.perfil}
+      </p>
+    </div>
+
+    <div style="padding: 0 24px 24px;">
+      <div style="background: #fff9e6; border-left: 4px solid #ffd04a; border-radius: 12px; padding: 20px;">
+        <h2 style="margin: 0 0 8px; color: #1a1a2e; font-size: 24px;">
+          ${r.pilar}
+        </h2>
+        <p style="margin: 0 0 12px; color: #7e34a0; font-weight: 600; font-size: 15px;">
+          ${r.tagline}
+        </p>
+        <p style="margin: 0; color: #4a4a68;">
+          ${r.descripcion}
+        </p>
+      </div>
+    </div>
+
+    <div style="padding: 0 24px 24px;">
+      <div style="background: #f8f9fc; border-radius: 12px; padding: 18px 20px;">
+        <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: #8b8ba3; font-weight: 700; margin-bottom: 8px;">
+          Ruta recomendada
+        </div>
+        <div style="font-size: 17px; font-weight: 700; color: #1a1a2e;">
+          ${r.ruta}
+        </div>
+      </div>
+    </div>
+
+    <div style="padding: 0 24px 24px;">
+      <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: #8b8ba3; font-weight: 700; margin-bottom: 14px;">
+        Primeros pasos
+      </div>
+      <div style="white-space: pre-line; color: #4a4a68; font-size: 15px; line-height: 1.8;">
+        ${accionesText}
+      </div>
+    </div>
+
+    <div style="padding: 0 24px 28px;">
+      <div style="background: #010723; border-radius: 12px; padding: 22px; color: #ffffff;">
+        <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: #ffd04a; font-weight: 700; margin-bottom: 10px;">
+          Mensaje de Auki
+        </div>
+        <p style="margin: 0; font-size: 15px; line-height: 1.6;">
+          ${r.closing ?? ""}
+        </p>
+      </div>
+    </div>
+
+    <div style="padding: 0 24px 32px; text-align: center;">
+      <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: #8b8ba3; font-weight: 700; margin-bottom: 14px;">
+        Te esperamos en el Discover Day
+      </div>
+      <img src="${r.foto}" alt="Discover Day LEAD UPN" style="max-width: 100%; height: auto; border-radius: 12px; display: block; margin: 0 auto;" />
+    </div>
+
+    <div style="background: #f8f9fc; padding: 24px; text-align: center; font-size: 13px; color: #8b8ba3;">
+      <p style="margin: 0 0 8px;">
+        <strong>LEAD UPN</strong> · Learn · Explore · Aspire · Discover
+      </p>
+      <p style="margin: 0;">
+        Diseñado y construido por <a href="https://solvegrades.com/nosotros/" style="color: #7e34a0; text-decoration: none; font-weight: 600;">SOLVEGRADES</a>
+      </p>
+    </div>
+  </div>
+</div>`;
 }
 
 export interface Env {
@@ -91,7 +153,7 @@ export async function onRequestPost(context: {
         replyTo: { email: SENDER_EMAIL, name: "LEAD UPN" },
         to: [{ email, name: result.nombre || email }],
         bcc: [{ email: SENDER_EMAIL, name: "LEAD UPN" }],
-        subject: `Tu ruta personalizada · ${result.pilar} | LEAD UPN`,
+        subject: `${result.nombre}, tu ruta LEAD UPN está lista ✨`,
         htmlContent: buildHtml(result),
       }),
     });
