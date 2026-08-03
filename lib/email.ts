@@ -1,84 +1,54 @@
 // ============================================================
-// EmailJS · Envío de resultados del pilar al correo del usuario.
-// Se ejecuta desde el navegador con la clave pública de EmailJS.
+// Email · Envío de la ruta del pilar al correo del usuario.
+// Redirige a la Cloudflare Pages Function /api/email (Brevo), que
+// envía al destinatario (to) y a una copia (bcc) en el servidor.
+// La API key de Brevo vive en el servidor, nunca en el navegador.
 // ============================================================
 
-import emailjs from "@emailjs/browser";
 import type { RutaSugerida } from "./ai/mentor";
-
-const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "";
-const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? "";
-const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? "";
 
 export interface EmailStatus {
   success: boolean;
   message: string;
 }
 
-function isConfigured(): boolean {
-  return Boolean(SERVICE_ID && TEMPLATE_ID && PUBLIC_KEY);
-}
-
-function getAbsoluteUrl(path: string): string {
-  if (typeof window === "undefined") return path;
-  if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  const origin = window.location.origin.replace(/\/$/, "");
-  const cleanPath = path.startsWith("/") ? path : `/${path}`;
-  return `${origin}${cleanPath}`;
-}
-
-// Los clientes de correo (especialmente Outlook) no siempre renderizan webp.
-// Convertimos automáticamente las URLs de Cloudinary a .jpg para el envío.
-function toJpgCloudinaryUrl(url: string): string {
-  if (!url.includes("res.cloudinary.com")) return url;
-  return url.replace(/\.webp$/, ".jpg");
-}
-
-function formatActions(acciones: string[]): string {
-  return acciones.map((a) => `• ${a}`).join("\n");
-}
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function sendPilarEmail(
   email: string,
   result: RutaSugerida,
 ): Promise<EmailStatus> {
-  if (!isConfigured()) {
-    return {
-      success: false,
-      message: "EmailJS no está configurado. Revisa las variables de entorno.",
-    };
-  }
-
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!email || !EMAIL_REGEX.test(email)) {
     return { success: false, message: "Ingresa un correo válido." };
   }
 
-  const templateParams = {
-    to_email: email,
-    to_name: result.nombre,
-    pilar: result.pilar,
-    tagline: result.tagline,
-    descripcion: result.descripcion,
-    perfil: result.perfil,
-    ruta: result.ruta,
-    acciones: formatActions(result.acciones),
-    closing: result.closing ?? "",
-    imagen_pilar_url: toJpgCloudinaryUrl(getAbsoluteUrl(result.imagen)),
-    imagen_foto_url: toJpgCloudinaryUrl(getAbsoluteUrl(result.foto)),
-  };
-
   try {
-    await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
+    const res = await fetch("/api/email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, result }),
+    });
+
+    const data = (await res.json().catch(() => ({}))) as {
+      success?: boolean;
+      message?: string;
+      error?: string;
+    };
+
+    if (!res.ok) {
+      return {
+        success: false,
+        message: data.error || `No se pudo enviar el correo (${res.status}).`,
+      };
+    }
+
     return {
       success: true,
-      message: `¡Listo! Te enviamos tu ruta a ${email}.`,
+      message: data.message || `¡Listo! Te enviamos tu ruta a ${email}.`,
     };
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-    console.error("[EmailJS] Error al enviar:", err);
-    return {
-      success: false,
-      message: `No se pudo enviar el correo: ${msg}`,
-    };
+    console.error("[email] Error al enviar:", err);
+    return { success: false, message: `No se pudo enviar el correo: ${msg}` };
   }
 }
