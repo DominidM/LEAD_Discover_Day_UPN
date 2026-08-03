@@ -286,7 +286,8 @@
   max-height: 90dvh;
   overflow: hidden;
   background: var(--night);
-  border-color: var(--border);
+  border-color: color-mix(in srgb, var(--card-glow) 50%, var(--border));
+  border-width: 1.5px;
 }
 
 .modalCard.modalCard::before {
