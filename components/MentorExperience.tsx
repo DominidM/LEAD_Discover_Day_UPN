@@ -428,7 +428,17 @@ export default function MentorExperience() {
           </div>
         </div>
         <div className={styles.footerMeta}>
-          <span>© 2026 LeadUPN. All rights reserved.</span>
+          <span className={styles.footerCopyright}>
+            © 2026 LeadUPN. All rights reserved.
+            <Image
+              src="https://res.cloudinary.com/dxuk9bogw/image/upload/v1785724960/ea44906b-6c83-445f-adb5-7d491513b167.png"
+              alt="LeadUPN"
+              width={16}
+              height={16}
+              unoptimized
+              className={styles.footerIcon}
+            />
+          </span>
           <span>
             Designed &amp; Built by{" "}
             <a

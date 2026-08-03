@@ -623,6 +623,13 @@
   color: var(--gold);
 }
 
+.footerIcon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 6px;
+  border-radius: 3px;
+}
+
 .marquee {
   overflow: hidden;
   width: 100%;
