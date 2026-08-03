@@ -19,6 +19,10 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SENDER_NAME = "LEAD UPN · Auki";
 const SENDER_EMAIL = "jeremyar792@gmail.com";
 
+function toPng(url: string): string {
+  return url.replace("/upload/", "/upload/f_png/");
+}
+
 function buildHtml(r: RutaSugerida): string {
   const accionesText = r.acciones.join("\n");
   return `\
@@ -26,7 +30,7 @@ function buildHtml(r: RutaSugerida): string {
   <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.12);">
 
     <div style="background: linear-gradient(135deg, #010723 0%, #1a0b2e 100%); padding: 32px 24px; text-align: center;">
-      <img src="https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785680406/logo-lead_p1ymto.webp" alt="LEAD UPN" style="height: 58px; margin-bottom: 12px;" />
+      <img src="${toPng("https://res.cloudinary.com/dpnxbnqxu/image/upload/v1785680406/logo-lead_p1ymto.webp")}" alt="Logo LEAD UPN" style="height: 58px; margin-bottom: 12px;" />
       <h1 style="margin: 0; color: #ffd04a; font-size: 22px; font-weight: 700; letter-spacing: 0.04em;">
         ¡Tu ruta LEAD UPN!
       </h1>
@@ -36,7 +40,7 @@ function buildHtml(r: RutaSugerida): string {
     </div>
 
     <div style="position: relative; text-align: center; background: #f8f9fc;">
-      <img src="${r.imagen}" alt="Pilar ${r.pilar}" style="max-width: 480px; width: 45%; height: auto; display: block; margin: 0 auto;" />
+      <img src="${toPng(r.imagen)}" alt="Pilar ${r.pilar} de LEAD UPN" style="max-width: 480px; width: 45%; height: auto; display: block; margin: 0 auto;" />
     </div>
 
     <div style="padding: 28px 24px;">
@@ -97,7 +101,7 @@ function buildHtml(r: RutaSugerida): string {
       <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: #8b8ba3; font-weight: 700; margin-bottom: 14px;">
         Te esperamos en el Discover Day
       </div>
-      <img src="${r.foto}" alt="Discover Day LEAD UPN" style="max-width: 100%; height: auto; border-radius: 12px; display: block; margin: 0 auto;" />
+      <img src="${toPng(r.foto)}" alt="Foto del Discover Day LEAD UPN" style="max-width: 100%; height: auto; border-radius: 12px; display: block; margin: 0 auto;" />
     </div>
 
     <div style="background: #f8f9fc; padding: 24px; text-align: center; font-size: 13px; color: #8b8ba3;">

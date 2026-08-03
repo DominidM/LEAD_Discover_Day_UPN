@@ -144,22 +144,21 @@ function cleanReply(text: string): string {
     .map((l) => l.trim())
     .filter((l) => l && !meta.test(l));
   let out = lines.join(" ").trim();
-  // Si quedó cola demasiado larga tras el último punto, cortar ahí.
-  const lastPeriod = out.lastIndexOf(".");
-  if (lastPeriod > 20 && out.length - lastPeriod > 160) {
-    out = out.slice(0, lastPeriod + 1);
-  }
-  // Truncado: si NO termina en puntuación final, quitar el fragmento incompleto
-  // (ej. "...transformar la chis") para no mostrar a medias.
   if (out && !/[.!?…]$/.test(out)) {
-    const words = out.split(/\s+/);
-    // Quitar últimas 1-2 palabras cortadas cuando el último fragmento terminó en
-    // una palabra completa o cortada sin cerrar.
-    if (words.length > 1) {
-      words.pop();
-      out = words.join(" ").trim();
+    const lastPeriod = out.lastIndexOf(".");
+    const lastExcl = out.lastIndexOf("!");
+    const lastQuestion = out.lastIndexOf("?");
+    const lastEnd = Math.max(lastPeriod, lastExcl, lastQuestion, -1);
+    if (lastEnd > 10) {
+      out = out.slice(0, lastEnd + 1).trim();
+    } else {
+      const words = out.split(/\s+/);
+      if (words.length > 1) {
+        words.pop();
+        out = words.join(" ").trim();
+      }
+      if (out && out.length < 3) out = "";
     }
-    if (out && out.length < 3) out = "";
   }
   return out;
 }
