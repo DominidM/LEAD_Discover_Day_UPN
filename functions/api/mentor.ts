@@ -171,7 +171,7 @@ function buildReplyPrompt(userData: UserData, message: string): string {
     JSON.stringify(userData, null, 2),
     ``,
     `La última respuesta del estudiante fue: "${message}".`,
-    `Tu respuesta es ÚNICAMENTE el mensaje que le dices ahora a ${nombre} en primera persona. Escribe 3-4 frases completas, cercanas, motivadoras y entusiastas, reaccionando a esa respuesta.`,
+    `Tu respuesta es ÚNICAMENTE el mensaje que le dices ahora a ${nombre} en primera persona. Escribe 2-3 frases completas, cercanas, motivadoras y entusiastas, reaccionando a esa respuesta.`,
     `Reglas de formato:`,
     `1. Empieza directamente con la frase de Auki.`,
     `2. Termina con un punto final.`,
